@@ -15,12 +15,33 @@
     <option value="company">Company</option>
   </select>
 
-  <input type="text" placeholder="Username">
-  <input type="password" placeholder="Password">
-
-  <button onclick="login()">Login</button>
+<input id="username" type="text" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button onclick="doLogin()">Login</button>
 </div>
 
 <script src="js/auth.js"></script>
+
+  <script>
+  function doLogin() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+    // Example static credentials
+    const validUsers = {
+      admin: "admin123",
+      student: "student123",
+      company: "company123"
+    };
+
+    if (validUsers[user] && validUsers[user] === pass) {
+      alert("Login successful as " + user);
+      window.location.href = user + ".html"; // redirect to different portal
+    } else {
+      alert("Invalid username or password!");
+    }
+  }
+</script>
+
 </body>
 </html>
