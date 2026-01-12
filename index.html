@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Placement Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="logo"><i class="fa-solid fa-graduation-cap"></i> Placement Portal</h2>
+        <ul class="menu">
+            <li class="active"><i class="fa fa-home"></i> Dashboard</li>
+            <li><i class="fa fa-user-graduate"></i> Students</li>
+            <li><i class="fa fa-building"></i> Companies</li>
+            <li><i class="fa fa-briefcase"></i> Job Openings</li>
+            <li><i class="fa fa-chart-line"></i> Placements</li>
+            <li><i class="fa fa-file"></i> Reports</li>
+            <li><i class="fa fa-gear"></i> Settings</li>
+        </ul>
+
+        <div class="admin">
+            <img src="https://i.pravatar.cc/80" alt="">
+            <p><strong>Admin John</strong><br>Admin</p>
+            <button class="logout">Logout</button>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+        <header class="topbar">
+            <h1>Placement Dashboard</h1>
+            <div class="icons">
+                <i class="fa fa-bell"></i>
+                <i class="fa fa-user-circle"></i>
+            </div>
+        </header>
+
+        <!-- Stat Cards -->
+        <section class="cards">
+            <div class="card blue">
+                <p>Total Students</p>
+                <h2>1,200</h2>
+            </div>
+            <div class="card green">
+                <p>Placed Students</p>
+                <h2>850</h2>
+            </div>
+            <div class="card orange">
+                <p>Available Jobs</p>
+                <h2>120</h2>
+            </div>
+            <div class="card purple">
+                <p>Companies</p>
+                <h2>45</h2>
+            </div>
+        </section>
+
+        <!-- Charts -->
+        <section class="grid-2">
+            <div class="panel">
+                <h3>Placement Statistics</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
+
+            <div class="panel">
+                <h3>Placement Overview</h3>
+                <canvas id="donutChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Tables -->
+        <section class="grid-2">
+            <div class="panel">
+                <h3>Placed Students</h3>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Company</th>
+                        <th>Package</th>
+                    </tr>
+                    <tr>
+                        <td>Amit Sharma</td>
+                        <td>B.Tech</td>
+                        <td>Google</td>
+                        <td>8 LPA</td>
+                    </tr>
+                    <tr>
+                        <td>Priya Verma</td>
+                        <td>MBA</td>
+                        <td>TCS</td>
+                        <td>10 LPA</td>
+                    </tr>
+                    <tr>
+                        <td>Rajesh Kumar</td>
+                        <td>BCA</td>
+                        <td>Infosys</td>
+                        <td>6 LPA</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="panel">
+                <h3>Recent Job Openings</h3>
+                <ul class="jobs">
+                    <li>
+                        Software Engineer – Amazon
+                        <button>Apply Now</button>
+                    </li>
+                    <li>
+                        Data Analyst – Wipro
+                        <button>Apply Now</button>
+                    </li>
+                    <li>
+                        HR Executive – Infosys
+                        <button>Apply Now</button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/charts.js"></script>
+</body>
+</html>
