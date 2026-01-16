@@ -363,7 +363,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 .averagePackage {background: linear-gradient(135deg, #5e35b1, #b39ddb);}
 
 /* Hover effect */
-.company-cards .card:hover {  transform: translateY(-4px);  box-shadow: 0 16px 36px rgba(0,0,0,0.45);}
+.company-cards .card:hover {  transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
