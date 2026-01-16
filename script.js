@@ -57,7 +57,7 @@ function updateKPIs(data) {
   document.getElementById('total').innerText =
     `Total Students\n${data.totalStudents || 0}`;
   document.getElementById('opted').innerText =
-    `Opted for Placement\n${data.optedStudents || 0}`;
+    `Opted Placement\n${data.optedStudents || 0}`;
   document.getElementById('eligible').innerText =
     `Eligible Students\n${data.eligibleStudents || 0}`;
   document.getElementById('placed').innerText =
