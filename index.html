@@ -80,33 +80,32 @@
     <!-- COMPANY STATISTICS -->
 <h2>Company Statistics</h2>
 
-<div class="cards company-cards" id="companyDashboard">
-  
-  <div class="card company total-company">
-    <div class="card-title">Total Companies</div>
-  <span id="totalCompanies">--</span>
+  <div class="company-cards">
+  <div class="card totalCompany">
+    <div>Total Companies</div>
+    <span id="totalCompanies">0</span>
   </div>
 
-  <div class="card company core-company">
-    <div class="card-title">Core Companies</div>
-    <span id="coreCompanies">--</span>
+  <div class="card coreCompany">
+    <div>Core Companies</div>
+    <span id="coreCount">0</span>
   </div>
 
-  <div class="card company noncore-company">
-    <div class="card-title">Non-Core Companies</div>
-    <span id="nonCoreCompanies">--</span>
+  <div class="card nonCoreCompany">
+    <div>Non-Core Companies</div>
+    <span id="nonCoreCount">0</span>
   </div>
 
-  <div class="card company highest-package">
-    <div class="card-title">Highest Package</div>
-    <span id="highestPackage">--</span>LPA
+  <div class="card highestPackage">
+    <div>Highest Package</div>
+    <span id="highestPackage">0</span>
   </div>
-  
-  <div class="card company average-package">
-    <div class="card-title">Average Package</div>
-    <span id="averagePackage">--</span>LPA
+
+  <div class="card averagePackage">
+    <div>Average Package</div>
+    <span id="averagePackage">0</span>
   </div>
-</div>
+  </div>
 
    <script>
 fetch("https://docs.google.com/spreadsheets/d/1iqJvfbitWYRXY4TtO8sNcpoksD4kMD_T3TC6DOI9TPo/gviz/tq?sheet=Dashboard&range=C5:C9&tqx=out:json")
