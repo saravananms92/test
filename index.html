@@ -82,6 +82,46 @@
             </div>
         </section>
 
+        
+  <title>Animated Pie Chart Demo</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+
+<h2>Programme-wise Placement (Animated)</h2>
+<div id="piechart" style="width: 600px; height: 400px;"></div>
+
+<script>
+google.charts.load('current', { packages:['corechart'] });
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Programme', 'Students'],
+    ['Core', 45],
+    ['Non-Core', 30],
+    ['Higher Studies', 15],
+    ['Entrepreneurship', 10]
+  ]);
+
+  var options = {
+    title: 'Programme-wise Analytics',
+    pieHole: 0.3,
+    animation: {
+      startup: true,
+      duration: 1000,
+      easing: 'out'
+    }
+  };
+
+  var chart = new google.visualization.PieChart(
+    document.getElementById('piechart')
+  );
+
+  chart.draw(data, options);
+}
+</script>
+
         <!-- Tables -->
         <section class="grid-2">
             <div class="panel">
