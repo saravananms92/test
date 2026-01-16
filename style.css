@@ -356,11 +356,11 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 }
 
 /* Individual card gradients */
-.total-company {background: linear-gradient(135deg, #1e88e5, #64b5f6);}
-.core-company {background: linear-gradient(135deg, #2e7d32, #66bb6a);}
-.noncore-company {background: linear-gradient(135deg, #e53935, #ff8a80);}
-.highest-package {background: linear-gradient(135deg, #ff9800, #ffd54f);}
-.average-package {background: linear-gradient(135deg, #5e35b1, #b39ddb);}
+.totalCompany {background: linear-gradient(135deg, #1e88e5, #64b5f6);}
+.coreCompany {background: linear-gradient(135deg, #2e7d32, #66bb6a);}
+.nonCoreCompany {background: linear-gradient(135deg, #e53935, #ff8a80);}
+.highestPackage {background: linear-gradient(135deg, #ff9800, #ffd54f);}
+.averagePackage {background: linear-gradient(135deg, #5e35b1, #b39ddb);}
 
 /* Hover effect */
 .company-cards .card:hover {  transform: translateY(-4px);  box-shadow: 0 16px 36px rgba(0,0,0,0.45);}
