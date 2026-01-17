@@ -57,8 +57,11 @@ header {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: #ffffff;
-  padding: 16px 20px 20px;
+  background: linear-gradient(135deg, #0D47A1, #1976D2 );
+  color: white;
+  padding: 60px 0;
+  position: relative;
+  z-index: 10;
   border-bottom: 4px solid #FF9933;
 }
 
