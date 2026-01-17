@@ -129,28 +129,84 @@ function drawCompanyChart(data) {
  ************************************************/
 function drawProgrammeChart(data) {
   const container = document.getElementById('programmeChart');
+
   if (!data.programmeCount || Object.keys(data.programmeCount).length === 0) {
     container.innerHTML = '<b>No Programme data available</b>';
     return;
   }
 
-  const colors = ['#0aa1d8', '#9c312c'];
-  const rows = [['Programme', 'Placed Students', { role: 'style' }]];
+  const rows = [['Programme', 'Placed Students']];
 
-  let i = 0;
   for (const p in data.programmeCount) {
-    rows.push([p, Number(data.programmeCount[p]) || 0, colors[i % colors.length]]);
-    i++;
+    rows.push([p, Number(data.programmeCount[p]) || 0]);
   }
 
   const table = google.visualization.arrayToDataTable(rows);
-  new google.visualization.ColumnChart(container).draw(table, {
+
+  // 👉 Add labels on top of bars
+  const view = new google.visualization.DataView(table);
+  view.setColumns([
+    0,
+    1,
+    {
+      calc: "stringify",
+      sourceColumn: 1,
+      type: "string",
+      role: "annotation"
+    }
+  ]);
+
+  const options = {
     height: 420,
-    chartArea: { left: 80, top: 60, width: '65%', height: '60%' },
-    vAxis: { title: 'Placed Students', minValue: 0, format: '0' },
-    legend: { position: 'none' }
-  });
+    backgroundColor: "transparent",
+
+    chartArea: {
+      left: 70,
+      top: 50,
+      width: "80%",
+      height: "70%"
+    },
+
+    bar: { groupWidth: "55%" },
+
+    legend: { position: "none" },
+
+    colors: ["#4f46e5"],
+
+    hAxis: {
+      textStyle: { fontSize: 12, color: "#334155" },
+      gridlines: { color: "transparent" }
+    },
+
+    vAxis: {
+      title: "Placed Students",
+      minValue: 0,
+      format: "0",
+      textStyle: { fontSize: 12, color: "#475569" },
+      titleTextStyle: { color: "#1e293b", fontSize: 13 },
+      gridlines: { color: "#e5e7eb" }
+    },
+
+    annotations: {
+      alwaysOutside: true,
+      textStyle: {
+        fontSize: 12,
+        bold: true,
+        color: "#1e293b"
+      }
+    },
+
+    animation: {
+      startup: true,
+      duration: 900,
+      easing: "out"
+    }
+  };
+
+  const chart = new google.visualization.ColumnChart(container);
+  chart.draw(view, options);
 }
+
 
 /************************************************
  * CORE vs NON-CORE (GROUPED BAR)
