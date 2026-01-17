@@ -130,7 +130,12 @@ function drawCompanyChart(data) {
 function drawProgrammeChart(data) {
   const container = document.getElementById('programmeChart');
 
-  if (!data.programmeCount || Object.keys(data.programmeCount).length === 0) {
+  if (!container) {
+    console.error("programmeChart container not found");
+    return;
+  }
+
+  if (!data || !data.programmeCount || Object.keys(data.programmeCount).length === 0) {
     container.innerHTML = '<b>No Programme data available</b>';
     return;
   }
@@ -143,70 +148,35 @@ function drawProgrammeChart(data) {
 
   const table = google.visualization.arrayToDataTable(rows);
 
-  // 👉 Add labels on top of bars
   const view = new google.visualization.DataView(table);
   view.setColumns([
     0,
     1,
-    {
-      calc: "stringify",
-      sourceColumn: 1,
-      type: "string",
-      role: "annotation"
-    }
+    { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }
   ]);
 
   const options = {
     height: 420,
     backgroundColor: "transparent",
-
-    chartArea: {
-      left: 70,
-      top: 50,
-      width: "80%",
-      height: "70%"
-    },
-
+    chartArea: { left: 70, top: 50, width: "80%", height: "70%" },
     bar: { groupWidth: "55%" },
-
     legend: { position: "none" },
-
     colors: ["#4f46e5"],
-
-    hAxis: {
-      textStyle: { fontSize: 12, color: "#334155" },
-      gridlines: { color: "transparent" }
-    },
-
+    hAxis: { textStyle: { fontSize: 12, color: "#334155" }, gridlines: { color: "transparent" } },
     vAxis: {
       title: "Placed Students",
       minValue: 0,
       format: "0",
       textStyle: { fontSize: 12, color: "#475569" },
-      titleTextStyle: { color: "#1e293b", fontSize: 13 },
       gridlines: { color: "#e5e7eb" }
     },
-
-    annotations: {
-      alwaysOutside: true,
-      textStyle: {
-        fontSize: 12,
-        bold: true,
-        color: "#1e293b"
-      }
-    },
-
-    animation: {
-      startup: true,
-      duration: 900,
-      easing: "out"
-    }
+    annotations: { alwaysOutside: true },
+    animation: { startup: true, duration: 900, easing: "out" }
   };
 
   const chart = new google.visualization.ColumnChart(container);
   chart.draw(view, options);
 }
-
 
 /************************************************
  * CORE vs NON-CORE (GROUPED BAR)
