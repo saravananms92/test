@@ -55,7 +55,7 @@ async function fetchAndDrawCharts() {
  ************************************************/
 function updateKPIs(data) {
   document.getElementById('total').innerText =
-    `Total Students\n${data.totalStudents || 0}`;
+    `${data.totalStudents || 0\nTotal Students}`;
   document.getElementById('opted').innerText =
     `Opted Placement\n${data.optedStudents || 0}`;
   document.getElementById('eligible').innerText =
