@@ -580,7 +580,7 @@ tbody tr:hover td {background: #ffe0b2;}
 .testimonial-card {
   min-width: 280px;
   max-width: 280px;
-  background: linear-gradient(180deg, #ffffff, #f1f5f9);
+  background: linear-gradient(180deg, #e0f2fe, #f8fafc);
   border-top: 4px solid #3b82f6;
   padding: 22px 20px;
   text-align: center;
