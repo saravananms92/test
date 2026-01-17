@@ -52,30 +52,64 @@ header {
 }
 
 /* ============ HEADER ================== */
-.svce-header {
+/* ============ HEADER ================== */
+header.svce-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: linear-gradient(135deg, #0D47A1, #1976D2 );
+  background: linear-gradient(135deg, #0D47A1, #1976D2);
   color: white;
-  padding: 60px 0;
+  padding: 60px 20px;
   position: relative;
   z-index: 10;
   border-bottom: 4px solid #FF9933;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
 
-.logo {max-height: 120px; width: auto;}
-.header-text {flex: 1; text-align: center;}
-.header-text h1 {margin: 0; font-size: 24px;}
-.header-text p {  margin-top: 4px;  font-size: 14px;  color: #6c757d;  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;}
+/* Logos */
+.logo {
+  max-height: 120px;
+  width: auto;
+}
+
+/* Center text */
+.header-text {
+  flex: 1;
+  text-align: center;
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.header-text p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #eaf2ff;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+}
 
 /* Header Mobile */
 @media (max-width: 768px) {
-  .svce-header {flex-direction: column;}
-  .logo {max-height: 60px;}
-  .header-text h1 {font-size: 18px;}
-  .header-text p {font-size: 13px;}
+  header.svce-header {
+    flex-direction: column;
+    padding: 30px 16px;
+  }
+
+  .logo {
+    max-height: 60px;
+  }
+
+  .header-text h1 {
+    font-size: 18px;
+  }
+
+  .header-text p {
+    font-size: 13px;
+  }
 }
 
 /* ==========HEADINGS =========== */
