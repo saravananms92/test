@@ -286,7 +286,6 @@ function populateStudentTable(data) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${s.programme}</td>
-      <td>${s.registerNo}</td>
       <td>${s.name}</td>
       <td>${s.company}</td>
       <td>${s.type}</td>
