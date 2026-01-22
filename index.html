@@ -36,11 +36,11 @@
     <ul class="nav-links">
   <li><a href="#Overview">Overview</a></li>
   <li><a href="circulars.html">Circulars</a></li>
+  <li><a href="recruiters.html">Recruiters</a></li>
   <li><a href="#Charts">Analytics</a></li>
-  <li><a href="#Recruiters">Recruiters</a></li>
   <li><a href="#Placed Students">Placed Students</a></li>
   <li><a href="#testimonials">Testimonials</a></li>
-  <li><a href="#Student Forms & Department Updates">Forms</a></li>
+  <li><a href="forms.html">Forms</a></li>
   <li><a href="#Contact">Contact</a></li>
 </ul>
 </div>
@@ -51,60 +51,61 @@
 
 <div class="cards">
   <div class="card" id="total">
-    <strong>0</strong>
     <span class="label">Total Students</span>
+    <strong>0</strong>
   </div>
 
   <div class="card" id="opted">
-    <strong>0</strong>
     <span class="label">Opted Placement</span>
+    <strong>0</strong>
   </div>
 
   <div class="card" id="eligible">
-    <strong>0</strong>
     <span class="label">Eligible Students</span>
+    <strong>0</strong>
   </div>
 
   <div class="card" id="placed">
-    <strong>0</strong>
     <span class="label">Students Placed</span>
+    <strong>0</strong>
   </div>
 
   <div class="card" id="percentage">
-    <strong>0%</strong>
     <span class="label">Placement %</span>
+    <strong>0%</strong>
   </div>
 </div>
 
     <!-- COMPANY STATISTICS -->
 <h2>Company Statistics</h2>
 
-  <div class="company-cards">
-  <div class="card totalCompany">
-    <div>Total Companies</div>
-    <span id="totalCompanies">0</span>
+<div class="cards company-cards" id="companyDashboard">
+  
+  <div class="card company total-company">
+    <div class="card-title">Total Companies</div>
+    <span id="totalCompanies">--</span>
   </div>
 
-  <div class="card coreCompany">
-    <div>Core Companies</div>
-    <span id="coreCount">0</span>
+  <div class="card company core-company">
+    <div class="card-title">Core Companies</div>
+    <span id="coreCompanies">--</span>
   </div>
 
-  <div class="card nonCoreCompany">
-    <div>Non-Core Companies</div>
-    <span id="nonCoreCount">0</span>
+  <div class="card company noncore-company">
+    <div class="card-title">Non-Core Companies</div>
+    <span id="nonCoreCompanies">--</span>
   </div>
 
-  <div class="card highestPackage">
-    <div>Highest Package</div>
-    <span id="highestPackage">0</span>
+  <div class="card company highest-package">
+    <div class="card-title">Highest Package</div>
+    <span id="highestPackage">--</span>LPA
   </div>
-
-  <div class="card averagePackage">
-    <div>Average Package</div>
-    <span id="averagePackage">0</span>
+  
+  <div class="card company average-package">
+    <div class="card-title">Average Package</div>
+    <span id="averagePackage">--</span>LPA
   </div>
-  </div>
+</div>
 
    <script>
 fetch("https://docs.google.com/spreadsheets/d/1iqJvfbitWYRXY4TtO8sNcpoksD4kMD_T3TC6DOI9TPo/gviz/tq?sheet=Dashboard&range=C5:C9&tqx=out:json")
@@ -143,20 +144,17 @@ function setDefaultCompanyStats() {
 }
    </script>
 
-  <div style="display:flex;gap:12px;margin:20px 0">
-  <div style="width:70px;height:70px;background:#0D47A1"></div>
-  <div style="width:70px;height:70px;background:#1976D2"></div>
-  <div style="width:70px;height:70px;background:#00ACC1"></div>
-  <div style="width:70px;height:70px;background:#F5F7FA;border:1px solid #ccc"></div>
-  <div style="width:70px;height:70px;background:#263238"></div>
-</div>
-
-
     <div class="circular-btn-container">
   <a href="circulars.html" class="circular-btn" id="circulars">
   📢 View Placement Circulars
   </a>
-    </div>
+  <a href="recruiters.html" class="circular-btn" id="recruiters">
+  🏭 View our Top Recruiters
+  </a>
+  <a href="forms.html" class="circular-btn" id="forms">
+  📃 Click to View Forms
+  </a> 
+  </div>
     
    <!-- PLACEMENT ANALYTICS -->
   <h2 id="Charts">Placement Analytics</h2>
@@ -175,32 +173,7 @@ function setDefaultCompanyStats() {
   ⬇️
   </button>
     
-  <div class="table-card">
-  <h2 id="Recruiters" class="section-title">Top Recruiters</h2>
-
-  <div class="recruiters">
-    <img src="assets/SPIC.png" alt="SPIC">
-    <img src="assets/SAINT GOBAIN.png" alt="Saint Gobain">
-    <img src="assets/ACCENTURE.png" alt="Accenture">
-    <img src="assets/BRAKES INDIA.png" alt="Brakes India">
-    <img src="assets/HYUNDAI.png" alt="Hyundai">
-    <img src="assets/INFOSYS.png" alt="Infosys">
-    <img src="assets/INOX AIR PRODUCTS.png" alt="INOX Air Products">
-    <img src="assets/technip.png" alt="techip">
-    <img src="assets/sanmar.png" alt="sanmar">
-    <img src="assets/bluestar.png" alt="bluestar">
-    <img src="assets/bgr.png" alt="bgr">
-    <img src="assets/facilio.png" alt="facilio">
-    <img src="assets/lti.png" alt="lti">
-    <img src="assets/kaar.png" alt="kaar">
-    <img src="assets/musigma1.png" alt="musigma1">
-    <img src="assets/mathcompany.png" alt="mathcompany">
-    <img src="assets/cognizant.png" alt="cognizant">
-    <img src="assets/aspire.png" alt="aspire">
-    </div>
-</div>
-    
-<h2>Company-wise Placement Analytics</h2>   
+  <h2>Company-wise Placement Analytics</h2>   
 <div style="display:flex; gap:20px;">
   <div id="companyStudentsChart" style="flex:3;"></div>
   <div id="companyLegend" style="flex:1;"></div>
@@ -277,8 +250,25 @@ function downloadReport() {
 
    <section id="testimonials" class="testimonials-section">
   <h2>🎓Student Testimonials</h2>
+  <h4>What Our Students Say</h4>
+  <p class="content">
+        Hear directly from our Mechanical Engineering students who secured placements through rigorous training, faculty mentorship, and systematic placement support.
+      </p>
 
   <div class="testimonials-wrapper">
+
+     <div class="testimonial-card">
+      <img src="assets/students/rohitkrishna.jpg" alt="ROHITH KRISHNA N">
+      <h4>Rohith Krishna N</h4>
+       <p class="meta">
+      <span class="batch">Batch 2022–2026</span>
+      <span class="programme">Mechanical Engineering</span>
+      <span class="placed">Placed in ACCENTURE</span>
+      </p>
+      <p class="content">
+        Even though my core background is Mechanical Engineering, college hackathons, coding events, and technical workshops motivated me to explore the software field. The Placement Team’s continuous training, mock interviews, and guidance helped me build confidence for software interviews. The support from the faculty and the Placement Cell played a key role in enabling me to secure placement in a software company.
+      </p>
+    </div>
 
     <div class="testimonial-card">
       <img src="assets/students/pratul.jpeg" alt="Pratul V. S">
@@ -422,85 +412,6 @@ fetch("gallery.json")
   });
 </script>
     
- <section class="forms-section" id="Student Forms & Department Updates">
-  <h1 id="Forms">Student Forms & Department Updates</h1>
-  <div class="forms-grid">
-
-    <!-- Career Option Form -->
-    <div class="form-card">
-      <h3>🎯 Student Career Option Registration</h3>
-      <p>
-        Collect students’ career preferences such as placement, higher studies,
-        entrepreneurship, or other career paths.
-      </p>
-      <a href="https://forms.gle/twP728UthZkKauBj8" target="_blank" class="form-btn">
-        Open Form
-      </a>
-    </div>
-   
-    <!-- Recruitment Feedback -->
-    <div class="form-card">
-      <h3>📋 Recruitment Feedback Form</h3>
-      <p>
-        Capture students’ interview experience, preparedness, rounds, strengths,
-        gaps, and curriculum relevance after recruitment.
-      </p>
-      <a href="https://forms.gle/d4ny98wnWLjVhymr7" target="_blank" class="form-btn">
-        Give Feedback
-      </a>
-    </div>
-
-    <!-- Academic Update -->
-    <div class="form-card">
-      <h3>📘 Academic Update Form</h3>
-      <p>
-        Update academic progress - Internship Training, Special Achievements and CGPA details for placement readiness tracking.
-      </p>
-      <a href="https://forms.gle/rAQKAwLQxzw7xFkp9" target="_blank" class="form-btn">
-        Submit Update
-      </a>
-    </div>
-
-    <!-- Placement Drive Instructions (Circular Style Card) -->
-<div class="form-card" id="openInstructions">
-  <h3>📌 Placement Drive – Instructions</h3>
-  <p>Mandatory guidelines to be strictly followed by all students attending placement drives.</p>
-  <a class="form-btn"><span>View Instructions</span></a>
-</div>
-
-<!-- Modal -->
-<link rel="stylesheet" href="style.css">
-<div id="instructionModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <iframe id="instructionFrame"></iframe>
-  </div>
-</div>
-<script src="modal.js"></script>
-
-    <!-- Student Photo & Resume Update -->
-    <div class="form-card">
-      <h3>🖼️ Student Photo & Resume Update</h3>
-      <p>
-        Submit your latest photograph and updated resume for placement and record purposes.
-      </p>
-      <a href="https://forms.gle/CjpAXMGrfQppVpES7" target="_blank" class="form-btn">
-        Update Photo & Resume
-      </a>
-    </div>
-
-    <!-- Student Placement Document Upload -->
-    <div class="form-card">
-      <h3>📄 Student Placement Document Upload</h3>
-      <p>
-        Upload all placement-related documents such as offer letters, certificates, and assessment forms.
-      </p>
-      <a href="https://forms.gle/2xTiEUtqQUFxEiNf6" target="_blank" class="form-btn">
-        Upload Documents
-      </a>
-    </div>
-  
-</section>
   <footer class="placement-footer">
   <div class="footer-grid">
 
@@ -600,10 +511,15 @@ fetch("gallery.json")
   <p>
   Please visit the college website:
   <a href="https://www.svce.ac.in" target="_blank" rel="noopener noreferrer">
-    www.svce.ac.in
+    🌐www.svce.ac.in
   </a>
   </p>
-  </p>
+  <p>
+  Please visit our department webpage:
+   <a href="https://www.svce.ac.in/departments/mechanical-engineering/" target="_blank" rel="noopener noreferrer">
+    🌐Mechanical Engineering
+  </a>
+ </p>
 </script>
 </div>
 </footer>
@@ -615,26 +531,4 @@ fetch("gallery.json")
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
