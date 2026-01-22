@@ -285,6 +285,8 @@ function populateStudentTable(data) {
   (data.placedStudents || []).forEach(s => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${s.registerNo}</td>
       <td>${s.programme}</td>
       <td>${s.name}</td>
       <td>${s.company}</td>
