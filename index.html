@@ -24,10 +24,6 @@
       Circulars | Analytics | Recruiters | Success Statistics | Forms | Contact</p>
   </div>
   
-<button onclick="adminLogin()" style="float:right;margin:10px;">
-Admin Login
-</button>
-
   <img src="assets/college-emblem.png" class="logo right-logo" alt="college-emblem">
 </header>
 
@@ -240,12 +236,14 @@ function downloadReport() {
 <table id="studentTableMain">
   <thead>
     <tr>
+      <th>Sl.No</th>
       <th>PROGRAMME</th>
-      <th>Register No</th>
+      <th>REGISTER NUMBER</th>
       <th>NAME OF THE STUDENT</th>
       <th>COMPANY NAME</th>
       <th>COMPANY TYPE</th>
-      <th>PACKAGE</th>
+      <th>PACKAGE(LPA)</th>
+      <th>OFFER LETTER</th>
     </tr>
   </thead>
   <tbody id="studentTable"></tbody>
@@ -537,4 +535,3 @@ fetch("gallery.json")
     </script>
 </body>
 </html>
-
