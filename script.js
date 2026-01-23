@@ -284,7 +284,7 @@ function searchTable() {
  * TABLE
  ************************************************/
 function populateStudentTable(data) {
-  const tbody = document.getElementById('studentTable');
+  const tbody = document.getElementById('Student_Data');
   if (!tbody) return;
 
   tbody.innerHTML = '';
