@@ -1,6 +1,22 @@
-function switchBatch(path) {
-  if (path) window.location.href = path;
+function switchBatch(folder) {
+  if (!folder) return;
+  window.location.href = "../" + folder + "/";
 }
+
+function setCurrentBatch() {
+  const path = window.location.pathname.toLowerCase();
+
+  const select = document.getElementById("batchSwitcher");
+  if (!select) return;
+
+  if (path.includes("batch2022")) {
+    select.value = "Batch2022";
+  } else if (path.includes("batch2023")) {
+    select.value = "Batch2023";
+  }
+}
+
+window.addEventListener("load", setCurrentBatch);
 
 /************************************************
  * ADMIN SYSTEM (SINGLE SOURCE)
