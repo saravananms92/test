@@ -288,6 +288,7 @@ function populateStudentTable(data) {
 
   tbody.innerHTML = '';
 
+  // Check admin status **before adding rows**
   const isAdmin = sessionStorage.getItem("admin") === "true";
 
   (data.placedStudents || []).forEach((s, i) => {
