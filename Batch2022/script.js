@@ -15,23 +15,17 @@ function logout() {
 function applyAdminUI() {
   const isAdmin = sessionStorage.getItem("admin") === "true";
 
-  // Show/hide admin-only UI elements
+  // Admin-only UI
   document.querySelectorAll('.adminOnly').forEach(el => {
     el.style.display = isAdmin ? "block" : "none";
   });
 
-  // Show/hide Offer Letter column **immediately for all rows**
+  // Show/hide Offer Letter column
   toggleAdminView(isAdmin);
 
-  // Toggle login/logout buttons
+  // Login/Logout buttons
   document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
   document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
-
-  // ✅ Update table immediately if it already exists
-  const tbody = document.getElementById('studentTable');
-  if (tbody) {
-    toggleAdminView(isAdmin);
-  }
 }
 
 /************************************************
@@ -294,6 +288,8 @@ function populateStudentTable(data) {
 
   tbody.innerHTML = '';
 
+  const isAdmin = sessionStorage.getItem("admin") === "true";
+
   (data.placedStudents || []).forEach((s, i) => {
     const offerLink = s.offerLetterUrl
       ? `<a href="${s.offerLetterUrl}" target="_blank">View</a>`
@@ -308,10 +304,11 @@ function populateStudentTable(data) {
       <td>${s.company || ''}</td>
       <td>${s.type || ''}</td>
       <td>${s.package || ''}</td>
-      <td class="adminCol">${offerLink}</td>
+      <td class="adminCol" style="display: ${isAdmin ? 'table-cell' : 'none'};">${offerLink}</td>
     `;
     tbody.appendChild(tr);
   });
+}
 
   // Apply admin toggle immediately
   const isAdmin = sessionStorage.getItem("admin") === "true";
