@@ -1,3 +1,7 @@
+document.querySelectorAll(".adminOnly").forEach(el=>{
+  el.style.display = isAdmin ? "block":"none";
+});
+
 /************************************************
  * GOOGLE CHARTS LOADER
  ************************************************/
@@ -284,28 +288,23 @@ function searchTable() {
  * TABLE
  ************************************************/
 function populateStudentTable(data) {
-  const tbody = document.getElementById('Student_Data');
+  const tbody = document.getElementById('studentTable');
   if (!tbody) return;
 
   tbody.innerHTML = '';
 
   (data.placedStudents || []).forEach((s, i) => {
 
-    const linkHTML = s.offerLetterUrl
-      ? `<a href="${s.offerLetterUrl}" target="_blank">View PDF</a>`
-      : 'N/A';
-
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${i + 1}</td>
-      <td>${s.registerNo || ''}</td>
       <td>${s.programme || ''}</td>
+      <td>${s.registerNo || ''}</td>
       <td>${s.name || ''}</td>
       <td>${s.company || ''}</td>
       <td>${s.type || ''}</td>
       <td>${s.package || ''}</td>
-      <td>${linkHTML}</td>
-    `;
+      `;
     tbody.appendChild(tr);
   });
 }
