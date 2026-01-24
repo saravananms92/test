@@ -1,39 +1,40 @@
-
 /************************************************
- * ADMIN LOGIN / LOGOUT HANDLERS
+ * ADMIN SYSTEM (SINGLE SOURCE)
  ************************************************/
-function loginAdmin() {
-  sessionStorage.setItem("admin", "true");
-  applyAdminUI();
-  location.reload();   // ✅ auto refresh
+function openAdminLogin() {
+  const pw = prompt("Enter Admin Password:");
+
+  if (pw === "1234") {
+    sessionStorage.setItem("admin", "true");
+    applyAdminUI();
+    location.reload(); // ✅ auto refresh
+  } else {
+    alert("Invalid Password");
+  }
 }
 
 function logout() {
-  sessionStorage.setItem("admin", "false");
+  sessionStorage.removeItem("admin");
   applyAdminUI();
-  location.reload();   // ✅ auto refresh
+  location.reload(); // ✅ auto refresh
 }
 
-// Toggle visibility of admin-only UI and Offer Letter column
 function applyAdminUI() {
   const isAdmin = sessionStorage.getItem("admin") === "true";
 
-  // Show/hide admin-only UI elements
   document.querySelectorAll('.adminOnly').forEach(el => {
     el.style.display = isAdmin ? "block" : "none";
   });
 
-  // Show/hide Offer Letter column
-  toggleAdminView(isAdmin);
-
-  // Toggle login/logout buttons
   document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
   document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
+
+  toggleAdminView(isAdmin);
 }
 
 function toggleAdminView(isAdmin) {
   document.querySelectorAll('.adminCol').forEach(col => {
-    col.style.display = isAdmin ? '' : 'none';
+    col.style.display = isAdmin ? "" : "none";
   });
 }
 
