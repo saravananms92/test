@@ -1,3 +1,4 @@
+
 /************************************************
  * ADMIN LOGIN / LOGOUT HANDLERS
  ************************************************/
@@ -15,17 +16,23 @@ function logout() {
 function applyAdminUI() {
   const isAdmin = sessionStorage.getItem("admin") === "true";
 
-  // Admin-only UI
+  // Show/hide admin-only UI elements
   document.querySelectorAll('.adminOnly').forEach(el => {
     el.style.display = isAdmin ? "block" : "none";
   });
 
-  // Offer Letter column
+  // Show/hide Offer Letter column
   toggleAdminView(isAdmin);
 
-  // Login/logout buttons
+  // Toggle login/logout buttons
   document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
   document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
+}
+
+function toggleAdminView(isAdmin) {
+  document.querySelectorAll('.adminCol').forEach(col => {
+    col.style.display = isAdmin ? '' : 'none';
+  });
 }
 
 /************************************************
@@ -288,9 +295,6 @@ function populateStudentTable(data) {
 
   tbody.innerHTML = '';
 
-  // Check admin status **before adding rows**
-  const isAdmin = sessionStorage.getItem("admin") === "true";
-
   (data.placedStudents || []).forEach((s, i) => {
     const offerLink = s.offerLetterUrl
       ? `<a href="${s.offerLetterUrl}" target="_blank">View</a>`
@@ -305,17 +309,14 @@ function populateStudentTable(data) {
       <td>${s.company || ''}</td>
       <td>${s.type || ''}</td>
       <td>${s.package || ''}</td>
-      <td class="adminCol" style="display: ${isAdmin ? 'table-cell' : 'none'};">${offerLink}</td>
+      <td class="adminCol">${offerLink}</td>
     `;
     tbody.appendChild(tr);
   });
-}
 
   // Apply admin toggle immediately
-  function toggleAdminView(isAdmin) {
-  document.querySelectorAll('.adminCol').forEach(col => {
-    col.style.display = isAdmin ? 'table-cell' : 'none';
-  });
+  const isAdmin = sessionStorage.getItem("admin") === "true";
+  toggleAdminView(isAdmin);
 }
 
 /************************************************
