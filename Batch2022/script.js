@@ -304,6 +304,11 @@ function populateStudentTable(data) {
       <td>${s.company || ''}</td>
       <td>${s.type || ''}</td>
       <td>${s.package || ''}</td>
+      <td>
+      ${s.offerLetterUrl
+      ? `<a href="${s.offerLetterUrl}" target="_blank">View</a>`
+      : 'Not Available'}
+      </td>
       `;
     tbody.appendChild(tr);
   });
