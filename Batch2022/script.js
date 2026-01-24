@@ -20,18 +20,18 @@ function applyAdminUI() {
     el.style.display = isAdmin ? "block" : "none";
   });
 
-  // Show/hide Offer Letter column
+  // Show/hide Offer Letter column **immediately for all rows**
   toggleAdminView(isAdmin);
 
   // Toggle login/logout buttons
   document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
   document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
-}
 
-function toggleAdminView(isAdmin) {
-  document.querySelectorAll('.adminCol').forEach(col => {
-    col.style.display = isAdmin ? '' : 'none';
-  });
+  // ✅ Update table immediately if it already exists
+  const tbody = document.getElementById('studentTable');
+  if (tbody) {
+    toggleAdminView(isAdmin);
+  }
 }
 
 /************************************************
