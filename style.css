@@ -6,20 +6,22 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #F5F7FA;
-  color: #1A1A1A;
+  background: #EFF5FB;
+  color: #263238;
   line-height: 1.6;
 }
+
 header {
-  background: linear-gradient(135deg, #0D47A1, #1976D2 );
+  background: linear-gradient(135deg, #0D47A1, #1976D2);
   color: white;
-  padding: 60px 0;
-  position: relative;
-  z-index: 10;
+}
+
+section {
+  background: white;
 }
 
 /* Common Container */
-.container {width: 90%; max-width: 1200px; margin: auto;}
+.container {width: 90%; max-width: 1200px; padding: 0 3vw; margin: auto;}
 
 /* Full-screen loading overlay */
 #loading {
@@ -52,64 +54,27 @@ header {
 }
 
 /* ============ HEADER ================== */
-/* ============ HEADER ================== */
-header.svce-header {
+.svce-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: linear-gradient(135deg, #0D47A1, #1976D2);
-  color: white;
-  padding: 60px 20px;
-  position: relative;
-  z-index: 10;
+  background: #ffffff;
+  padding: 16px 20px 20px;
   border-bottom: 4px solid #FF9933;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
 
-/* Logos */
-.logo {
-  max-height: 120px;
-  width: auto;
-}
-
-/* Center text */
-.header-text {
-  flex: 1;
-  text-align: center;
-}
-
-.header-text h1 {
-  margin: 0;
-  font-size: 24px;
-  color: #ffffff;
-}
-
-.header-text p {
-  margin-top: 6px;
-  font-size: 14px;
-  color: #eaf2ff;
-  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
-}
+.logo {max-height: 120px; width: auto;}
+.header-text {flex: 1; text-align: center;}
+.header-text h1 {margin: 0; font-size: 24px;}
+.header-text p {  margin-top: 4px;  font-size: 14px;  color: #6c757d;  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;}
 
 /* Header Mobile */
 @media (max-width: 768px) {
-  header.svce-header {
-    flex-direction: column;
-    padding: 30px 16px;
-  }
-
-  .logo {
-    max-height: 60px;
-  }
-
-  .header-text h1 {
-    font-size: 18px;
-  }
-
-  .header-text p {
-    font-size: 13px;
-  }
+  .svce-header {flex-direction: column;}
+  .logo {max-height: 60px;}
+  .header-text h1 {font-size: 18px;}
+  .header-text p {font-size: 13px;}
 }
 
 /* ==========HEADINGS =========== */
@@ -191,7 +156,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
   padding: 10px;
   justify-items: center; /* ⭐ KEY LINE: centers cards */
 }
-.circular-btn-container {  display: flex;  justify-content: center;  margin: 40px 0 30px;}
+.circular-btn-container {  display: flex;  justify-content: center; gap: 30px; margin: 40px 0 30px;}
 
 .circular-card {
   background: #ffffff;
@@ -219,7 +184,6 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 
 .circular-card a:hover {background: #1565c0;}
 
-/* Instruction Card – same style as Placement Circulars */
 /* Modal*/
 .modal {
   display: none;
@@ -234,7 +198,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
   background: #fff;
   width: 80%; max-width: 700px;
   height: 70%;
-  margin: 5% auto;
+  margin: 150px auto;
   border-radius: 10px;
   overflow: hidden;
   position: relative;
@@ -247,13 +211,24 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
   font-size: 22px;
   cursor: pointer;
 }
+.modal {
+  z-index: 9999;   /* 👈 higher than header */
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 92%;
+    height: calc(100vh - 140px);
+    margin-top: 100px;
+  }
+}
 
 /* =============   NAVBAR ============= */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: transparent;
+  background: #ffffff;
   border-bottom: 3px solid #FF9933;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
@@ -286,6 +261,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
   gap: 18px;
   margin: 20px 0;
 }
+
 /* ================================
    KPI CARD BASE STYLE
 ================================ */
@@ -297,7 +273,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
   border-radius: 16px;
   box-shadow: 0 12px 26px rgba(0,0,0,0.22);
   transition: all 0.35s ease;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
   display: flex;
@@ -306,6 +282,10 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
   min-height: 120px;
   position: relative;
   overflow: hidden;
+}
+.card {
+  min-height: 120px;
+  max-height: 120px;      /* ✅ prevents resize jump */
 }
 
 /* ================================
@@ -336,7 +316,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 
 /* label */
 .card .label {
-  font-size: 15px;
+  font-size: 18px;
   opacity: 0.9;
   letter-spacing: 0.4px;
 }
@@ -344,7 +324,7 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 /* number */
 .card strong {
   margin-top: 6px;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 800;
   letter-spacing: 1px;
 }
@@ -367,109 +347,66 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 }
 
 /* =====================================================
-   COMPANY STATISTICS – GLASS KPI STYLE
+   COMPANY STATISTICS – TEXT KPI STYLE
 ===================================================== */
 .company-cards {
-  max-width: 1200px;
-  margin: 14px auto;
-  padding: 0 12px;
+ max-width: 1200px;
+  margin: 10px auto;
+  padding: 0 10px;               /* ⬅ reduce side gaps */
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(5, 1fr); /* ⬅ ALL in one row */
+  gap: 14px;                     /* ⬅ tighter spacing */
 }
 
 /* Base style for company cards */
 .company-cards .card {
-  padding: 18px 12px;
-  border-radius: 18px;
+  padding: 20px 10px;           /* ⬅ reduced */
+  border-radius: 14px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;              /* ⬅ reduced */
   text-align: center;
-  color: #fff;
-
-  box-shadow: 0 12px 28px rgba(0,0,0,0.22);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 110px;
-  position: relative;
-  overflow: hidden;
-
-  transition: all 0.35s ease;
-}
-
-/* Shine layer */
-.company-cards .card::after {
-  content: "";
-  position: absolute;
-  top: -40%;
-  left: -60%;
-  width: 40%;
-  height: 180%;
-  background: rgba(255,255,255,0.18);
-  transform: rotate(25deg);
-  transition: 0.6s;
-}
-
-.company-cards .card:hover::after {
-  left: 120%;
+  min-height: 105px;            /* ⬅ reduced height */
 }
 
 /* Big number styling */
 .company-cards .card span {
-  font-size: 34px;
-  font-weight: 800;
+ font-size: 30px;              /* ⬅ reduced */
+  font-weight: 700;
   margin-top: 6px;
-  letter-spacing: 0.6px;
 }
 
-/* Individual gradients */
-.totalCompany {
-  background: linear-gradient(135deg, #2196f3, #6ec6ff);
-}
-
-.coreCompany {
-  background: linear-gradient(135deg, #2ecc71, #7dffb2);
-}
-
-.nonCoreCompany {
-  background: linear-gradient(135deg, #ff5252, #ff9e9e);
-}
-
-.highestPackage {
-  background: linear-gradient(135deg, #ffb300, #ffe082);
-}
-
-.averagePackage {
-  background: linear-gradient(135deg, #7e57c2, #c4b5fd);
-}
+/* Individual card gradients */
+.total-company {background: linear-gradient(135deg, #1e88e5, #64b5f6);}
+.core-company {background: linear-gradient(135deg, #2e7d32, #66bb6a);}
+.noncore-company {background: linear-gradient(135deg, #e53935, #ff8a80);}
+.highest-package {background: linear-gradient(135deg, #ff9800, #ffd54f);}
+.average-package {background: linear-gradient(135deg, #5e35b1, #b39ddb);}
 
 /* Hover effect */
-.company-cards .card:hover {
-  transform: translateY(-6px) scale(1.04);
-  box-shadow: 0 20px 45px rgba(0,0,0,0.35);
-}
+.company-cards .card:hover {  transform: translateY(-4px);  box-shadow: 0 16px 36px rgba(0,0,0,0.45);}
 
-/* Responsive */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .company-cards {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .company-cards .card {
-    padding: 22px 16px;
-    font-size: 16px;
-  }
-
-  .company-cards .card span {
-    font-size: 36px;
-  }
+  .company-cards {grid-template-columns: 1fr; gap: 20px;}
+  .company-cards .card {padding: 28px 18px; font-size: 16px;}
+  .company-cards .card span {font-size: 32px;}
 }
 
+/* =========   RESPONSIVE TUNING  ============ */
+
+@media (max-width: 768px) {
+  .cards {grid-template-columns: 1fr; gap: 20px;}
+  .card {padding: 32px 22px; font-size: 16px;}
+  .card span,
+  .card strong {font-size: 32px;}
+  .company-stats {padding: 18px 20px;}
+  .company-stats p {font-size: 16px;}
+   .company-stats span {font-size: 22px;}
+}
 
 /* ==============   CHARTS ======================== */
 .charts {
@@ -481,22 +418,17 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 }
 
 .chart-box {
-  height: 420px;
-  background: linear-gradient(180deg, #f8fbff, #ffffff);
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  padding: 18px;
+  height: 400px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 1px 1px 6px rgba(0,0,0,0.12);
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-@media (max-width: 768px) {
-  .chart-box {
-    height: 320px;
-    padding: 10px;
-  }
-}
+@media (max-width: 768px) {.chart-box {height: 300px;}}
 
 /* ============   TABLE  ================= */
 table {
@@ -559,6 +491,36 @@ tbody tr:hover td {background: #ffe0b2;}
 }
 
 .recruiters img:hover {transform: scale(1.05);}
+
+/****************Gallery************************/
+.gallery-wrapper {
+  overflow-x: auto;
+}
+
+.slider-track {
+  display: flex;
+  gap: 16px;
+  padding: 10px;
+}
+
+/* CARD */
+.slider-track .gallery-card {
+  min-width: 260px;
+  max-width: 260px;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* IMAGE */
+.slider-track .gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .gallery-section {margin: 30px 0;}
 .section-title {margin-bottom: 12px;  font-size: 26px;  font-weight: 600;}
 .gallery-scroll {
@@ -566,22 +528,29 @@ tbody tr:hover td {background: #ffe0b2;}
   gap: 16px;
   overflow-x: auto;
   padding-bottom: 10px;
+  justify-content: center;
   scroll-snap-type: x mandatory;
 }
 
 .gallery-scroll::-webkit-scrollbar {  height: 6px;}
 .gallery-scroll::-webkit-scrollbar-thumb {  background: #bbb;  border-radius: 4px;}
 .gallery-card {
-  min-width: 260px;
+ min-width: 260px;
   max-width: 260px;
+  height: 200px;            /* fixed height for full-view effect */
   border-radius: 10px;
   background: #fff;
   box-shadow: 0 3px 10px rgba(0,0,0,0.08);
   scroll-snap-align: start;
   overflow: hidden;
+  flex: 0 0 auto;           /* prevents flex auto-resize */
 }
 
-.gallery-card img {  width: 100%;  height: 180px;  object-fit: cover;}
+.gallery-card img {  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* fills container, keeps aspect */
+  object-position: center;  /* centers the crop */
+  display: block;}
 .gallery-card p {  padding: 10px;  font-size: 13px;  line-height: 1.5;  color: #333;}
 
 /****charts download button*****/
@@ -625,7 +594,7 @@ tbody tr:hover td {background: #ffe0b2;}
 .testimonial-card {
   min-width: 280px;
   max-width: 280px;
-  background: linear-gradient(180deg, #e0f2fe, #f8fafc);
+  background: linear-gradient(180deg, #ffffff, #f1f5f9);
   border-top: 4px solid #3b82f6;
   padding: 22px 20px;
   text-align: center;
@@ -789,14 +758,14 @@ tbody tr:hover td {background: #ffe0b2;}
   flex-wrap: wrap;               /* wrap on smaller screens */
   gap: 30px;
   max-width: 1200px;
-  margin: auto; justify-content: space-between; /* evenly space cards */
+  margin: 20px 20px; justify-content: space-between; /* evenly space cards */
 }
 
 /* Footer boxes (cards) – responsive widths */
 .footer-box {
   flex: 1 1 25%;                 /* 3 cards per row approx */
   min-width: 220px;              /* prevent shrinking too small */
-  padding: 10px;
+  padding: 20px 20px;
   border-radius: 14px;
   font-size: 14px;
   line-height: 1.7;
@@ -861,3 +830,14 @@ tbody tr:hover td {background: #ffe0b2;}
   }
 #lastUpdated {color: #5c5a5a; font-size: 14px;}
 .footer-bottom .disclaimer {color: #fc0303; font-size: 14px;}
+
+
+
+
+
+
+
+
+
+
+
