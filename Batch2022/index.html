@@ -197,7 +197,7 @@ function setDefaultCompanyStats() {
 <!-- TABLE -->
 <h2 id="Placed Students">Details of Placed Students</h2>
     
-<div id="adminOnly" style="display:none;">
+<div id="adminOnly" class="adminOnly" style="display:none;">
   <h3>Student Report</h3>
   <h3>
     <input type="text" id="regNo" placeholder="Enter Register Number">
@@ -539,34 +539,6 @@ fetch("gallery.json")
   window.onload = function () {
     document.getElementById("loading").style.display = "none";
   };
-</script>
-
-<script>
-function openAdminLogin() {
-  const pw = prompt("Enter Admin Password:");
-
-  if (pw === "1234") {
-    sessionStorage.setItem("admin", "true");
-    applyAdminUI();
-    alert("Admin Login Successful");
-  } else {
-    alert("Invalid Password");
-  }
-}
-
-function logout() {
-  sessionStorage.removeItem("admin");
-  applyAdminUI();
-}
-
-function applyAdminUI() {
-  const isAdmin = sessionStorage.getItem("admin");
-
-  document.getElementById("adminOnly").style.display = isAdmin ? "block" : "none";
-  document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
-  document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
-}
-window.addEventListener("load", applyAdminUI);
 </script>
 
 </body>
