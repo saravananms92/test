@@ -5,11 +5,13 @@
 function loginAdmin() {
   sessionStorage.setItem("admin", "true");
   applyAdminUI();
+  location.reload();   // ✅ auto refresh
 }
 
 function logout() {
   sessionStorage.setItem("admin", "false");
   applyAdminUI();
+  location.reload();   // ✅ auto refresh
 }
 
 // Toggle visibility of admin-only UI and Offer Letter column
