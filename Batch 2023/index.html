@@ -1,1 +1,574 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVCE MECH Placement Overview</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+  
+<body>
+<!-- Loading Overlay -->
+<div id="loading">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <p>Loading data and charts… Please wait.</p>
+  </div>
+</div>
+    
+  <header class="svce-header">
+  <img src="assets/college-text-logo.png" class="logo left-logo" alt="college-text-logo">
+  
+  <div class="header-text">
+    <h1>Department of Mechanical Engineering</h1>
+    <p>Live Placement Dashboard of Batch 2022–26<br> 
+      Circulars | Analytics | Recruiters | Success Statistics | Forms | Contact</p>
+  </div>
+  
+  <img src="assets/college-emblem.png" class="logo right-logo" alt="college-emblem">
+</header>
+
+  <nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-title">
+      BATCH 2022-2026
+  </div>
+
+  <ul class="nav-links">
+  <li><a href="#" id="adminLoginBtn" onclick="openAdminLogin()">Admin Login</a></li>
+  <li><a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a></li>
+  <li><a href="#Overview">Overview</a></li>
+  <li><a href="circulars.html">Circulars</a></li>
+  <li><a href="recruiters.html">Recruiters</a></li>
+  <li><a href="#Charts">Analytics</a></li>
+  <li><a href="#Placed Students">Placed Students</a></li>
+  <li><a href="#testimonials">Testimonials</a></li>
+  <li><a href="forms.html">Forms</a></li>
+  <li><a href="#Contact">Contact</a></li>
+</ul>
+</div>
+</nav>
+
+  <!-- KPI CARDS -->
+<h2 id="Overview">Placement Overview</h2>
+
+<div class="cards">
+  <div class="card" id="total">
+    <span class="label">Total Students</span>
+    <strong>0</strong>
+  </div>
+
+  <div class="card" id="opted">
+    <span class="label">Opted Placement</span>
+    <strong>0</strong>
+  </div>
+
+  <div class="card" id="eligible">
+    <span class="label">Eligible Students</span>
+    <strong>0</strong>
+  </div>
+
+  <div class="card" id="placed">
+    <span class="label">Students Placed</span>
+    <strong>0</strong>
+  </div>
+
+  <div class="card" id="percentage">
+    <span class="label">Placement %</span>
+    <strong>0%</strong>
+  </div>
+</div>
+
+    <!-- COMPANY STATISTICS -->
+<h2>Company Statistics</h2>
+
+<div class="cards company-cards" id="companyDashboard">
+  
+  <div class="card company total-company">
+    <div class="card-title">Total Companies</div>
+    <span id="totalCompanies">--</span>
+  </div>
+
+  <div class="card company core-company">
+    <div class="card-title">Core Companies</div>
+    <span id="coreCompanies">--</span>
+  </div>
+
+  <div class="card company noncore-company">
+    <div class="card-title">Non-Core Companies</div>
+    <span id="nonCoreCompanies">--</span>
+  </div>
+
+  <div class="card company highest-package">
+    <div class="card-title">Highest Package</div>
+    <span id="highestPackage">--</span>LPA
+  </div>
+  
+  <div class="card company average-package">
+    <div class="card-title">Average Package</div>
+    <span id="averagePackage">--</span>LPA
+  </div>
+</div>
+
+   <script>
+fetch("https://docs.google.com/spreadsheets/d/1iqJvfbitWYRXY4TtO8sNcpoksD4kMD_T3TC6DOI9TPo/gviz/tq?sheet=Dashboard&range=C5:C9&tqx=out:json")
+  .then(res => res.text())
+  .then(text => {
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+
+    if (rows && rows.length >= 5) {
+      document.getElementById("totalCompanies").innerText     = rows[0].c[0]?.v ?? "0";
+      document.getElementById("coreCompanies").innerText      = rows[1].c[0]?.v ?? "0";
+      document.getElementById("nonCoreCompanies").innerText   = rows[2].c[0]?.v ?? "0";
+      document.getElementById("highestPackage").innerText     = rows[3].c[0]?.v ?? "0";
+      document.getElementById("averagePackage").innerText     = rows[4].c[0]?.v ?? "0";
+    } else {
+      setDefaultCompanyStats();
+      console.warn("Company stats range empty or insufficient data");
+    }
+
+    // ✅ Hide loader AFTER data loads
+    if (typeof chartsLoaded === "function") {
+      chartsLoaded();
+    }
+  })
+  .catch(err => {
+    console.error("Company stats fetch error:", err);
+    setDefaultCompanyStats();
+  });
+
+function setDefaultCompanyStats() {
+  document.getElementById("totalCompanies").innerText = "0";
+  document.getElementById("coreCompanies").innerText = "0";
+  document.getElementById("nonCoreCompanies").innerText = "0";
+  document.getElementById("highestPackage").innerText = "0";
+  document.getElementById("averagePackage").innerText = "0";
+}
+   </script>
+
+  <div class="circular-btn-container">
+  <a href="circulars.html" class="circular-btn" id="circulars">
+  📢 View Placement Circulars
+  </a>
+  <a href="recruiters.html" class="circular-btn" id="recruiters">
+  🏭 View our Top Recruiters
+  </a>
+  <a href="forms.html" class="circular-btn" id="forms">
+  📃 Click to View Forms
+  </a> 
+  </div>
+    
+   <!-- PLACEMENT ANALYTICS -->
+  <h2 id="Charts">Placement Analytics</h2>
+  <div class="charts">
+    <div id="statusChart" class="chart-box"></div>
+    <div id="companyChart" class="chart-box"></div>
+  </div>
+    
+  <!-- PROGRAMME-WISE ANALYTICS -->
+  <h2>Programme-wise Analytics</h2>
+  <div class="charts">
+    <div id="programmeChart" class="chart-box"></div>
+    <div id="coreNonCoreChart" class="chart-box"></div>
+  </div>
+    <button class="download-btn" onclick="downloadChart('coreNonCoreChart','Programme-wise Analytics.jpg')">
+  ⬇️
+  </button>
+    
+  <h2>Company-wise Placement Analytics</h2>   
+<div style="display:flex; gap:20px;">
+  <div id="companyStudentsChart" style="flex:3;"></div>
+  <div id="companyLegend" style="flex:1;"></div>
+</div>
+<button class="download-btn" onclick="downloadChart('companyStudentsChart','Company-wise Placement Analytics.jpg')">
+  ⬇️
+</button>
+
+      <!-- TOP PACKAGES -->
+  <h2>Top Five Highest Packages</h2>
+  <div class="charts">
+    <div id="topPackageChart" class="chart-box"></div>
+    </div>
+    <button class="download-btn" onclick="downloadChart('topPackageChart','Top Five Highest Packages.jpg')">
+  ⬇️
+  </button>
+
+<!-- TABLE -->
+<h2 id="Placed Students">Details of Placed Students</h2>
+    
+<div id="adminOnly" style="display:none;">
+  <h3>Student Report</h3>
+  <h3>
+    <input type="text" id="regNo" placeholder="Enter Register Number">
+    <button onclick="downloadReport()">Download Report</button>
+  </h3>
+</div>
+    
+<script>
+function downloadReport() {
+  if (!sessionStorage.getItem("admin")) {
+    alert("Admin login required");
+    return;
+  }
+
+  const regInput = document.getElementById("regNo");
+  const reg = regInput.value.trim();
+
+  if (!reg) {
+    alert("Enter Register Number");
+    return;
+  }
+
+  alert("close the newly opened tab after download initiation.");
+
+  const url =
+    "https://script.google.com/macros/s/AKfycbx2PWHsy8Zh_aD9d-67n_0q7xpnF-MznuFB4otxb85DkRTufgAKGKgLTiI2TqGbi4BIvg/exec"
+    + "?reg=" + encodeURIComponent(reg)
+    + "&key=1234";
+
+  window.open(url, "_blank");
+  regInput.value = "";
+}
+</script>
+   
+<div class="table-controls">
+  <input
+    type="text"
+    id="studentSearch"
+    placeholder="🔍 Search student name, company name, company type..."
+    onkeyup="searchTable()"
+  >
+</div>
+    
+<table id="studentTableMain">
+  <thead>
+    <tr>
+      <th>Sl.No</th>
+      <th>PROGRAMME NAME</th>
+      <th>REGISTER NUMBER</th>
+      <th>NAME OF THE STUDENT</th>
+      <th>COMPANY NAME</th>
+      <th>COMPANY TYPE</th>
+      <th>PACKAGE (LPA)</th>
+      </tr>
+  </thead>
+  <tbody id="studentTable"></tbody>
+</table>
+
+  <!-- Your external script for charts/data -->
+  <script src="script.js"></script>
+
+   <section id="testimonials" class="testimonials-section">
+  <h2>🎓Student Testimonials</h2>
+  <h4>What Our Students Say</h4>
+  <p class="content">
+        Hear directly from our Mechanical Engineering students who secured placements through rigorous training, faculty mentorship, and systematic placement support.
+      </p>
+
+  <div class="testimonials-wrapper">
+
+     <div class="testimonial-card">
+      <img src="assets/students/rohitkrishna.jpg" alt="ROHITH KRISHNA N">
+      <h4>Rohith Krishna N</h4>
+       <p class="meta">
+      <span class="batch">Batch 2022–2026</span>
+      <span class="programme">Mechanical Engineering</span>
+      <span class="placed">Placed in ACCENTURE</span>
+      </p>
+      <p class="content">
+        Even though my core background is Mechanical Engineering, college hackathons, coding events, and technical workshops motivated me to explore the software field. The Placement Team’s continuous training, mock interviews, and guidance helped me build confidence for software interviews. The support from the faculty and the Placement Cell played a key role in enabling me to secure placement in a software company.
+      </p>
+    </div>
+
+    <div class="testimonial-card">
+      <img src="assets/students/pratul.jpeg" alt="Pratul V. S">
+      <h4>Pratul V. S</h4>
+       <p class="meta">
+      <span class="batch">Batch 2022–2026</span>
+      <span class="programme">Mechanical Engineering & Automation</span>
+      <span class="placed">Placed in HYUNDAI</span>
+      </p>
+      <p class="content">
+        Consistent guidance and support from the faculty of the Department of Mechanical Engineering, along with their motivation and structured placement training, enabled me to successfully secure my placement.
+      </p>
+    </div>
+
+    <div class="testimonial-card">
+      <img src="assets/students/adithya.jpg" alt="Adithya S">
+      <h4>Adithya S</h4>
+      <p class="meta">
+    <span class="batch">Batch 2022–2026</span>
+    <span class="programme">Mechanical Engineering</span>
+    <span class="placed">Placed in SPIC</span>
+    </p>
+    <p class="content">
+    A strong foundation in core mechanical subjects, along with continuous guidance from faculty advisors and the placement coordinator, played a crucial role in my placement at SPIC. The structured training and constant encouragement from the Placement cell and Mechanical Engineering Department helped me approach the process with confidence.
+      </p>
+    </div>
+    
+    <div class="testimonial-card">
+      <img src="assets/students/sanjay.jpg" alt="Sanjay R">
+      <h4>Sanjay R</h4>
+      <p class="meta">
+    <span class="batch">Batch 2022–2026</span>
+    <span class="programme">Mechanical Engineering & Automation</span>
+    <span class="placed">Placed in Brakes India Pvt Ltd</span>
+    </p>
+      <p class="content">
+        I sincerely thank the Department of Mechanical Engineering for its excellent facilities, hands-on training, and continuous support. The Semester in Industry Program at Sundaram Fasteners provided valuable industrial exposure that helped me secure my placement at Brakes India Private Limited.
+      </p>
+    </div>
+
+    <div class="testimonial-card">
+      <img src="assets/students/anandharam.jpg" alt="Anandha Ram S">
+      <h4>Anandha Ram S</h4>
+      <p class="meta">
+    <span class="batch">Batch 2022–2026</span>
+    <span class="programme">Mechanical Engineering</span>
+    <span class="placed">Placed in Brakes India Pvt Ltd</span>
+    </p>
+      <p class="content">
+        The hands-on training and industry-oriented approach of the Mechanical Engineering department played a key role in my placement success.
+      </p>
+    </div>
+
+    <div class="testimonial-card">
+      <img src="assets/students/aravindakrishnan.jpg" alt="Aravinda Krishnan K">
+      <h4>Aravinda Krishnan K</h4>
+      <p class="meta">
+    <span class="batch">Batch 2022–2026</span>
+    <span class="programme">Mechanical Engineering & Automation</span>
+    <span class="placed">Placed in Mu Sigma</span>
+    </p>
+      <p class="content">
+        I am grateful to the Department of Mechanical Engineering for providing a strong foundation in core subjects and excellent training opportunities. The communication and aptitude training, along with continuous guidance from the faculty and placement coordinator support helped me confidently secure my placement at Mu Sigma.
+      </p>
+    </div>
+
+    <div class="testimonial-card">
+      <img src="assets/students/viswanathan.jpg" alt="Viswanathan G">
+      <h4>Viswanathan G</h4>
+     <p class="meta">
+    <span class="batch">Batch 2022–2026</span>
+    <span class="programme">Mechanical Engineering & Automation</span>
+    <span class="placed">Placed in INOX Air Products</span>
+    </p>
+      <p class="content">
+        The communication skills course in the sixth-semester curriculum, along with the core knowledge imparted by the department faculty, was instrumental in thoroughly preparing me for the placement process, enhancing both my confidence and performance.
+      </p>
+    </div>
+
+    <div class="testimonial-card">
+      <img src="assets/students/srivarthini.jpg" alt="Sri Varthini V M">
+      <h4>Sri Varthini V M</h4>
+      <p class="meta">
+    <span class="batch">Batch 2022–2026</span>
+    <span class="programme">Mechanical Engineering</span>
+    <span class="placed">Placed in Jones Lang LaSalle Incorporated</span>
+    </p>
+      <p class="content">
+        I am grateful to the Mechanical Engineering Department for their guidance, practical training, and continuous support. The knowledge and industry-oriented preparation provided by the department helped me secure my placement at Jones Lang LaSalle Incorporated.
+      </p>
+    </div>
+  </div>
+
+     <!-- Auto-scroll testimonials -->
+     <script>
+      const wrapper = document.querySelector('.testimonials-wrapper');
+
+    if (wrapper) {
+      setInterval(() => {
+        wrapper.scrollBy({ left: 300, behavior: 'smooth' });
+
+        if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth) {
+          wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+      }, 4000);
+    }
+   </script>   
+   </section>
+
+<h2 class="section-title">Gallery</h2>
+
+<div class="gallery-wrapper">
+  <div class="slider-track" id="gallerySlider"></div>
+</div>
+ 
+<script>
+fetch("gallery.json")
+  .then(res => res.json())
+  .then(data => {
+    const track = document.getElementById("gallerySlider");
+
+    function createSlides() {
+      data.forEach(item => {
+        const slide = document.createElement("div");
+        slide.className = "slide";
+
+        const img = document.createElement("img");
+        img.src = item.image;   // ✅ FIX HERE
+
+        const caption = document.createElement("p");
+        caption.textContent = item.description;
+
+        slide.appendChild(img);
+        slide.appendChild(caption);
+        track.appendChild(slide);
+      });
+    }
+
+    createSlides();
+    createSlides(); // infinite scroll
+  });
+</script>
+    
+  <footer class="placement-footer">
+  <div class="footer-grid">
+
+    <!-- Contact -->
+    <div class="footer-box contact-box">
+      <h3 id="Contact">Contact</h3>
+      <P><strong>Placement Dashboard Maintained By</strong></P>
+      <img src="assets/saravanan.jpg" class="passport-photo" alt="Dr. S Saravanan">
+      <p>
+        <strong>Dr. S SARAVANAN</strong><br>
+        Assistant Professor,<br>
+        Placement Coordinator,<br>
+        Department of Mechanical Engineering<br><br>
+
+        <img src="assets/email.png" class="icon">
+        <a href="mailto:saravananm@svce.ac.in">saravananm@svce.ac.in</a>
+      </p>
+    </div>
+
+    <!-- Location -->
+    <div class="footer-box location-box">
+      <h3>Location</h3>
+      <p>
+        <strong>Campus Address</strong><br><br>
+
+        <img src="assets/location.png" class="icon">
+        <strong>Sri Venkateswara College of Engineering</strong><br>
+        Post Bag No.1, Pennalur Village,<br>
+        Chennai – Bengaluru Highways,<br>
+        Sriperumbudur Tk. – 602 117,<br>
+        Tamil Nadu, India<br><br>
+
+        College Hours: 08:30 AM – 03:30 PM<br><br>
+
+        <img src="assets/telephone.png" class="icon">
+        <a href="tel:04427152000">044-2715-2000</a><br>
+
+        <img src="assets/email.png" class="icon">
+        <a href="mailto:enquiry@svce.ac.in">enquiry@svce.ac.in</a>
+      </p>
+    </div>
+
+    <!-- Reach Us -->
+    <div class="footer-box reach-box">
+      <h3>Reach Us</h3>
+      <p>
+        <strong>Management Quota Admissions</strong><br><br>
+
+        <img src="assets/location.png" class="icon">
+        <strong>Sri Venkateswara Educational and Health Trust</strong><br>
+        1/3A River View Road,<br>
+        Sector 3, Kotturpuram,<br>
+        Chennai – 600085,<br>
+        Tamil Nadu, India<br><br>
+
+        Working Hours: 09:00 AM – 03:30 PM<br><br>
+
+        <img src="assets/telephone.png" class="icon">
+        <a href="tel:04424470688">044-2447-0688</a>,
+        <a href="tel:04424470689">044-2447-0689</a><br>
+
+        <img src="assets/email.png" class="icon">
+        <a href="mailto:admissionenquiry@svce.ac.in">
+          admissionenquiry@svce.ac.in
+        </a>
+      </p>
+    </div>
+
+ </div>
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom">
+  <p id="lastUpdated">
+  <script>
+  const lastUpdatedElement = document.getElementById("lastUpdated");
+  const now = new Date();
+
+  const formattedDate = now.toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+
+  lastUpdatedElement.innerHTML =
+    `Data auto-synced from Google Sheet | Last updated: ${formattedDate}`;
+</script>
+
+</p>
+<p class="footer-credit">
+  © Designed & Maintained by the Department of Mechanical Engineering
+</p>
+<p class="disclaimer">
+    <strong>Disclaimer</strong><br>
+    This dashboard is a department-level placement tracking and analytics portal
+    maintained by the Mechanical Engineering Department for internal monitoring,
+    student guidance and continuous improvement.
+    Official consolidated placement statistics are published by the Placement Cell in the College Website.
+  <p>
+  Please visit the college website:
+  <a href="https://www.svce.ac.in" target="_blank" rel="noopener noreferrer">
+    www.svce.ac.in
+  </a>
+  </p>
+  <p>
+  Please visit our department webpage:
+   <a href="https://www.svce.ac.in/departments/mechanical-engineering/" target="_blank" rel="noopener noreferrer">
+    Mechanical Engineering
+  </a>
+ </p>
+</div>
+</footer>
+
+    <script>
+  window.onload = function () {
+    document.getElementById("loading").style.display = "none";
+  };
+</script>
+
+<script>
+function openAdminLogin() {
+  const pw = prompt("Enter Admin Password:");
+
+  if (pw === "1234") {
+    sessionStorage.setItem("admin", "true");
+    applyAdminUI();
+    alert("Admin Login Successful");
+  } else {
+    alert("Invalid Password");
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem("admin");
+  applyAdminUI();
+}
+
+function applyAdminUI() {
+  const isAdmin = sessionStorage.getItem("admin");
+
+  document.getElementById("adminOnly").style.display = isAdmin ? "block" : "none";
+  document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
+  document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
+}
+window.addEventListener("load", applyAdminUI);
+</script>
+
+</body>
+</html>
+
