@@ -35,6 +35,13 @@
   </div>
 
   <ul class="nav-links">
+  <li>
+  <select id="batchSwitcher" onchange="switchBatch(this.value)" class="batch-switcher">
+    <option value="">🎓 Switch Batch</option>
+    <option value="../Batch2022/">Batch 2022–26</option>
+    <option value="../Batch2023/">Batch 2023–27</option>
+  </select>
+  </li>
   <li><a href="#" id="adminLoginBtn" onclick="openAdminLogin()">Admin Login</a></li>
   <li><a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a></li>
   <li><a href="#Overview">Overview</a></li>
