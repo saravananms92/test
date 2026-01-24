@@ -296,7 +296,7 @@ function populateStudentTable(data) {
   (data.placedStudents || []).forEach((s, i) => {
 
     const tr = document.createElement('tr');
-    tr.innerHTML = `
+    (tr.innerHTML = `
       <td>${i + 1}</td>
       <td>${s.programme || ''}</td>
       <td>${s.registerNo || ''}</td>
@@ -309,7 +309,7 @@ function populateStudentTable(data) {
       ? `<a href="${s.offerLetterUrl}" target="_blank">View</a>`
       : 'Not Available'}
       </td>
-      `;
+      `);
     tbody.appendChild(tr);
   });
 }
