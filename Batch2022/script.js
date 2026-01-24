@@ -1,3 +1,9 @@
+function switchBatch(path) {
+  if (path) {
+    window.location.href = path;
+  }
+}
+
 /************************************************
  * ADMIN SYSTEM (SINGLE SOURCE)
  ************************************************/
