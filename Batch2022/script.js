@@ -1,7 +1,3 @@
-function switchBatch(page) {
-  if (page) window.location.href = page;
-}
-
 /************************************************
  * ADMIN SYSTEM (SINGLE SOURCE)
  ************************************************/
