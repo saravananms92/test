@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
+  
+<body>
 <!-- Loading Overlay -->
 <div id="loading">
   <div class="loader-box">
@@ -13,8 +15,7 @@
     <p>Loading data and charts… Please wait.</p>
   </div>
 </div>
-  
-  <body>
+    
   <header class="svce-header">
   <img src="assets/college-text-logo.png" class="logo left-logo" alt="college-text-logo">
   
@@ -31,9 +32,11 @@
   <div class="nav-container">
     <div class="nav-title">
       BATCH 2022-2026
-    </div>
+  </div>
 
-    <ul class="nav-links">
+  <ul class="nav-links">
+  <li><a href="#" id="adminLoginBtn" onclick="openAdminLogin()">Admin Login</a></li>
+  <li><a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a></li>
   <li><a href="#Overview">Overview</a></li>
   <li><a href="circulars.html">Circulars</a></li>
   <li><a href="recruiters.html">Recruiters</a></li>
@@ -144,7 +147,7 @@ function setDefaultCompanyStats() {
 }
    </script>
 
-    <div class="circular-btn-container">
+  <div class="circular-btn-container">
   <a href="circulars.html" class="circular-btn" id="circulars">
   📢 View Placement Circulars
   </a>
@@ -193,22 +196,27 @@ function setDefaultCompanyStats() {
 
 <!-- TABLE -->
 <h2 id="Placed Students">Details of Placed Students</h2>
-<h3>Student Report (Access given only to Admins)</h3>
-<h3><input type="text" id="regNo" placeholder="Enter Register Number">
-<button onclick="downloadReport()">Download Report</button></h3>
+    
+<div id="adminOnly" style="display:none;">
+  <h3>Student Report</h3>
+  <h3>
+    <input type="text" id="regNo" placeholder="Enter Register Number">
+    <button onclick="downloadReport()">Download Report</button>
+  </h3>
+</div>
     
 <script>
 function downloadReport() {
-  const regInput = document.getElementById("regNo");
-  const reg = regInput.value.trim();
-  if (!reg) {
-    alert("Enter Register Number");
+  if (!sessionStorage.getItem("admin")) {
+    alert("Admin login required");
     return;
   }
 
-  const pw = prompt("Enter Admin Password:");
-  if (pw !== "1234") {
-    alert("Access denied");
+  const regInput = document.getElementById("regNo");
+  const reg = regInput.value.trim();
+
+  if (!reg) {
+    alert("Enter Register Number");
     return;
   }
 
@@ -237,14 +245,13 @@ function downloadReport() {
   <thead>
     <tr>
       <th>Sl.No</th>
-      <th>PROGRAMME</th>
+      <th>PROGRAMME NAME</th>
       <th>REGISTER NUMBER</th>
       <th>NAME OF THE STUDENT</th>
       <th>COMPANY NAME</th>
       <th>COMPANY TYPE</th>
-      <th>PACKAGE(LPA)</th>
-      <th>OFFER LETTER</th>
-    </tr>
+      <th>PACKAGE (LPA)</th>
+      </tr>
   </thead>
   <tbody id="studentTable"></tbody>
 </table>
@@ -515,16 +522,15 @@ fetch("gallery.json")
   <p>
   Please visit the college website:
   <a href="https://www.svce.ac.in" target="_blank" rel="noopener noreferrer">
-    🌐www.svce.ac.in
+    www.svce.ac.in
   </a>
   </p>
   <p>
   Please visit our department webpage:
    <a href="https://www.svce.ac.in/departments/mechanical-engineering/" target="_blank" rel="noopener noreferrer">
-    🌐Mechanical Engineering
+    Mechanical Engineering
   </a>
  </p>
-</script>
 </div>
 </footer>
 
@@ -532,6 +538,38 @@ fetch("gallery.json")
   window.onload = function () {
     document.getElementById("loading").style.display = "none";
   };
-    </script>
+</script>
+
+<script>
+function openAdminLogin() {
+  const pw = prompt("Enter Admin Password:");
+
+  if (pw === "1234") {
+    sessionStorage.setItem("admin", "true");
+    applyAdminUI();
+    alert("Admin Login Successful");
+  } else {
+    alert("Invalid Password");
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem("admin");
+  applyAdminUI();
+}
+
+function applyAdminUI() {
+  const isAdmin = sessionStorage.getItem("admin");
+
+  document.getElementById("adminOnly").style.display = isAdmin ? "block" : "none";
+  document.getElementById("adminLoginBtn").style.display = isAdmin ? "none" : "inline-block";
+  document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
+}
+window.addEventListener("load", applyAdminUI);
+</script>
+
 </body>
 </html>
+
+
+
