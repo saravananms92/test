@@ -315,10 +315,8 @@ function searchTable() {
 function getPhotoUrl(photo) {
   if (!photo) return "https://via.placeholder.com/60x80?text=No+Photo";
 
-  // If already uc?id= link, use directly
   if (photo.includes("uc?id=")) return photo;
 
-  // If normal drive link, convert
   const match = photo.match(/\/d\/(.+?)\//);
   if (match && match[1]) {
     return `https://drive.google.com/uc?id=${match[1]}`;
