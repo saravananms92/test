@@ -306,7 +306,8 @@ function searchTable() {
   if (!tbody) return;
 
   Array.from(tbody.getElementsByTagName("tr")).forEach(row => {
-    row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(filter) ? "" : "none";
   });
   applyFilters();
 }
@@ -409,10 +410,16 @@ function populateCompanyFilter() {
   });
 }
 
-// ───────── Attach Filter Events ─────────//
+// ───────── Attach Filter Events + Search Events ─────────//
 document.addEventListener("DOMContentLoaded", () => {
+// Filters
 document.querySelectorAll("#filterCompany, #filterType, #filterPackage")
   .forEach(el => el.addEventListener("change", applyFilters));
+// Search
+  const searchInput = document.getElementById("studentSearch");
+  if (searchInput) {
+    searchInput.addEventListener("input", searchTable);
+  }
 });
 
 // ───────── Apply Filters ─────────
