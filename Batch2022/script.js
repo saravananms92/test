@@ -313,15 +313,20 @@ function searchTable() {
  * POPULATE STUDENT TABLE
  ************************************************/
 function getPhotoUrl(photo) {
-  if (!photo) return "https://via.placeholder.com/60x80?text=No+Photo";
-
-  if (photo.includes("uc?id=")) return photo;
-
-  const match = photo.match(/\/d\/(.+?)\//);
-  if (match && match[1]) {
-    return `https://drive.google.com/uc?id=${match[1]}`;
+  if (!photo) {
+    return "https://via.placeholder.com/60x80?text=No+Photo";
   }
 
+  // If this is already uc?id= link
+  const match = photo.match(/uc\\?id=(.+)/) || photo.match(/\\/d\\/(.+?)\\//);
+  const fileId = match ? match[1] : "";
+
+  if (fileId) {
+    // Use the thumbnail endpoint
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w150`;
+  }
+
+  // Fallback to stored link
   return photo;
 }
 
