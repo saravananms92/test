@@ -312,6 +312,14 @@ function searchTable() {
 /************************************************
  * POPULATE STUDENT TABLE
  ************************************************/
+// ───────── Helper for Safe Photo URL ─────────
+function getPhotoUrl(photo) {
+  // If photo is empty or invalid, you can show a placeholder image
+  return photo && photo.trim() !== ""
+    ? photo
+    : "img/default-user.png"; // optional default photo
+}
+// ───────── Populate Placed Students Table ─────────
 function populateStudentTable(data) {
   const tbody = document.getElementById('studentTable');
   if (!tbody) return;
@@ -319,16 +327,25 @@ function populateStudentTable(data) {
   tbody.innerHTML = '';
 
   (data.placedStudents || []).forEach((s, i) => {
+    
+    // Offer letter HTML
     const offerLink = s.offerLetterUrl
       ? `<a href="${s.offerLetterUrl}" target="_blank">View</a>`
       : 'N/A';
 
+    // Photo URL — use direct link from JSON
+    const photoUrl = getPhotoUrl(s.photo);
+    
+    // Create table row
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${i + 1}</td>
       <td>${s.programme || ''}</td>
       <td>${s.registerNo || ''}</td>
       <td>${s.name || ''}</td>
+      <td>
+        <img src="${photoUrl}" alt="${s.name || ""}" loading="lazy" class="stud-photo">
+      </td>
       <td>${s.company || ''}</td>
       <td>${s.type || ''}</td>
       <td>${s.package || ''}</td>
