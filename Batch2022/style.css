@@ -252,8 +252,6 @@ h3 {  font-size: 0.8rem;  margin: 20px 0 12px;  text-align: left;  color: #00224
 }
 
 /* =============   NAVBAR ============= */
-/* =============   NAVBAR ============= */
-
 .navbar {
   position: sticky;
   top: 0;
@@ -536,8 +534,8 @@ tbody tr:nth-child(odd) td {background: #fff3e0;}
 tbody tr:hover td {background: #ffe0b2;}
 
 .stud-photo {
-  width: 50px;
-  height: 65px;
+  width: 80px;
+  height: 105px;
   object-fit: cover;
   border-radius: 5px;
   border: 1px solid #ccc;
