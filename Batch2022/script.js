@@ -424,17 +424,23 @@ document.querySelectorAll("#filterCompany, #filterType, #filterPackage")
 
 // ───────── Apply Filters ─────────
 function applyFilters() {
+  const searchValue = (document.getElementById("studentSearch")?.value || "").toLowerCase();
   const company = filterCompany.value.toLowerCase();
   const type = filterType.value.toLowerCase();
   const pack = filterPackage.value;
 
-  document.querySelectorAll("#studentTable tr").forEach(row => {
+document.querySelectorAll("#studentTable tr").forEach(row => {
+    const text = row.innerText.toLowerCase();
     const rowCompany = (row.dataset.company || "").toLowerCase();
     const rowType = (row.dataset.type || "").toLowerCase();
     const rowPack = parseFloat(row.dataset.package || 0);
 
     let show = true;
 
+    // ✅ SEARCH
+    if (searchValue && !text.includes(searchValue)) show = false;
+    
+    // ✅ FILTERS
     if (company && rowCompany !== company) show = false;
     if (type && rowType !== type) show = false;
 
