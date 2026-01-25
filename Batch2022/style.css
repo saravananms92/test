@@ -535,6 +535,14 @@ tbody td {padding: 10px; background: #fcf6c5; text-align: left;}
 tbody tr:nth-child(odd) td {background: #fff3e0;}
 tbody tr:hover td {background: #ffe0b2;}
 
+.stud-photo {
+  width: 50px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
 /* =============   SEARCH BAR ===================== */
 .table-controls {
   margin: 20px auto 10px;
