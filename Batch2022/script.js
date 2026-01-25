@@ -100,6 +100,7 @@ async function fetchAndDrawCharts() {
     drawCompanyVsStudentsChart(data);
     drawTopPackageChart(data);
     populateStudentTable(data);
+    populateCompanyFilter();
 
     // Apply admin UI based on session
     applyAdminUI();
@@ -307,6 +308,7 @@ function searchTable() {
   Array.from(tbody.getElementsByTagName("tr")).forEach(row => {
     row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
   });
+  applyFilters();
 }
 
 /************************************************
@@ -338,7 +340,7 @@ function getPhotoUrl(photo) {
   return photo;
 }
 
-// ───────── Populate Placed Students Table ─────────
+// ───────── Populate Placed Students Table ─────────//
 function populateStudentTable(data) {
   const tbody = document.getElementById('studentTable');
   if (!tbody) return;
@@ -354,9 +356,13 @@ function populateStudentTable(data) {
 
     // Photo URL — use direct link from JSON
     const photoUrl = getPhotoUrl(s.photo);
-    
+
     // Create table row
     const tr = document.createElement('tr');
+    tr.dataset.company = (s.company || '').trim();
+    tr.dataset.type = (s.type || '').trim();
+    tr.dataset.package = s.package || 0;
+    
     tr.innerHTML = `
       <td>${i + 1}</td>
       <td>${s.programme || ''}</td>
@@ -382,6 +388,58 @@ function populateStudentTable(data) {
   // Apply admin toggle immediately
   const isAdmin = sessionStorage.getItem("admin") === "true";
   toggleAdminView(isAdmin);
+}
+// ───────── Populate Company Filter ─────────//
+function populateCompanyFilter() {
+  const companySet = new Set();
+  document.querySelectorAll("#studentTable tr").forEach(row => {
+    if (row.dataset.company) companySet.add(row.dataset.company);
+  });
+
+  const select = document.getElementById("filterCompany");
+  if (!select) return;
+
+  select.innerHTML = `<option value="">All Companies</option>`;
+
+  companySet.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
+}
+
+// ───────── Attach Filter Events ─────────//
+document.addEventListener("DOMContentLoaded", () => {
+document.querySelectorAll("#filterCompany, #filterType, #filterPackage")
+  .forEach(el => el.addEventListener("change", applyFilters));
+});
+
+// ───────── Apply Filters ─────────
+function applyFilters() {
+  const company = filterCompany.value.toLowerCase();
+  const type = filterType.value.toLowerCase();
+  const pack = filterPackage.value;
+
+  document.querySelectorAll("#studentTable tr").forEach(row => {
+    const rowCompany = (row.dataset.company || "").toLowerCase();
+    const rowType = (row.dataset.type || "").toLowerCase();
+    const rowPack = parseFloat(row.dataset.package || 0);
+
+    let show = true;
+
+    if (company && rowCompany !== company) show = false;
+    if (type && rowType !== type) show = false;
+
+    if (pack) {
+      if (pack === "0-3" && rowPack > 3) show = false;
+      if (pack === "3-5" && (rowPack < 3 || rowPack > 5)) show = false;
+      if (pack === "5-10" && (rowPack < 5 || rowPack > 10)) show = false;
+      if (pack === "10+" && rowPack < 10) show = false;
+    }
+
+    row.style.display = show ? "" : "none";
+  });
 }
 
 /************************************************
