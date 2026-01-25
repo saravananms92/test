@@ -317,16 +317,24 @@ function getPhotoUrl(photo) {
     return "https://via.placeholder.com/60x80?text=No+Photo";
   }
 
-  // If this is already uc?id= link
-  const match = photo.match(/uc\\?id=(.+)/) || photo.match(/\\/d\\/(.+?)\\//);
-  const fileId = match ? match[1] : "";
+  let fileId = "";
+
+  // Match uc?id=FILEID
+  let match = photo.match(/uc\?id=([^&]+)/);
+
+  // Match /d/FILEID/
+  if (!match) {
+    match = photo.match(/\/d\/([^\/]+)/);
+  }
+
+  if (match && match[1]) {
+    fileId = match[1];
+  }
 
   if (fileId) {
-    // Use the thumbnail endpoint
     return `https://drive.google.com/thumbnail?id=${fileId}&sz=w150`;
   }
 
-  // Fallback to stored link
   return photo;
 }
 
