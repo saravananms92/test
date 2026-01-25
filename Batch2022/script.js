@@ -314,7 +314,7 @@ function searchTable() {
  ************************************************/
 function getPhotoUrl(photo) {
   if (!photo) {
-    return "https://via.placeholder.com/60x80?text=No+Photo";
+    return "https://via.placeholder.com/80x105?text=No+Photo";
   }
 
   let fileId = "";
