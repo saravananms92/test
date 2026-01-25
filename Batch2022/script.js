@@ -312,13 +312,21 @@ function searchTable() {
 /************************************************
  * POPULATE STUDENT TABLE
  ************************************************/
-// ───────── Helper for Safe Photo URL ─────────
 function getPhotoUrl(photo) {
-  // If photo is empty or invalid, you can show a placeholder image
-  return photo && photo.trim() !== ""
-    ? photo
-    : "img/default-user.png"; // optional default photo
+  if (!photo) return "https://via.placeholder.com/60x80?text=No+Photo";
+
+  // If already uc?id= link, use directly
+  if (photo.includes("uc?id=")) return photo;
+
+  // If normal drive link, convert
+  const match = photo.match(/\/d\/(.+?)\//);
+  if (match && match[1]) {
+    return `https://drive.google.com/uc?id=${match[1]}`;
+  }
+
+  return photo;
 }
+
 // ───────── Populate Placed Students Table ─────────
 function populateStudentTable(data) {
   const tbody = document.getElementById('studentTable');
@@ -343,8 +351,14 @@ function populateStudentTable(data) {
       <td>${s.programme || ''}</td>
       <td>${s.registerNo || ''}</td>
       <td>${s.name || ''}</td>
-      <td>
-        <img src="${photoUrl}" alt="${s.name || ""}" loading="lazy" class="stud-photo">
+      <td style="text-align:center">
+        <img 
+          src="${photoUrl}" 
+          alt="${s.name || ""}" 
+          loading="lazy" 
+          class="stud-photo"
+          onerror="this.src='https://via.placeholder.com/60x80?text=No+Photo';"
+        >
       </td>
       <td>${s.company || ''}</td>
       <td>${s.type || ''}</td>
