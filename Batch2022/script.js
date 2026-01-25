@@ -100,6 +100,7 @@ async function fetchAndDrawCharts() {
     drawCompanyVsStudentsChart(data);
     drawTopPackageChart(data);
     populateStudentTable(data);
+    populateProgrammeFilter();
     populateCompanyFilter();
 
     // Apply admin UI based on session
@@ -360,6 +361,7 @@ function populateStudentTable(data) {
 
     // Create table row
     const tr = document.createElement('tr');
+    tr.dataset.programme = (s.programme || '').trim();
     tr.dataset.company = (s.company || '').trim();
     tr.dataset.type = (s.type || '').trim();
     tr.dataset.package = s.package || 0;
@@ -390,6 +392,27 @@ function populateStudentTable(data) {
   const isAdmin = sessionStorage.getItem("admin") === "true";
   toggleAdminView(isAdmin);
 }
+// ───────── Populate Programme Filter ─────────//
+function populateProgrammeFilter() {
+  const progSet = new Set();
+
+  document.querySelectorAll("#studentTable tr").forEach(row => {
+    if (row.dataset.programme) progSet.add(row.dataset.programme);
+  });
+
+  const select = document.getElementById("filterProgramme");
+  if (!select) return;
+
+  select.innerHTML = `<option value="">All Programmes</option>`;
+
+  progSet.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    select.appendChild(opt);
+  });
+}
+
 // ───────── Populate Company Filter ─────────//
 function populateCompanyFilter() {
   const companySet = new Set();
@@ -413,7 +436,7 @@ function populateCompanyFilter() {
 // ───────── Attach Filter Events + Search Events ─────────//
 document.addEventListener("DOMContentLoaded", () => {
 // Filters
-document.querySelectorAll("#filterCompany, #filterType, #filterPackage")
+document.querySelectorAll("#filterProgramme, #filterCompany, #filterType, #filterPackage")
   .forEach(el => el.addEventListener("change", applyFilters));
 // Search
   const searchInput = document.getElementById("studentSearch");
@@ -425,12 +448,14 @@ document.querySelectorAll("#filterCompany, #filterType, #filterPackage")
 // ───────── Apply Filters ─────────
 function applyFilters() {
   const searchValue = (document.getElementById("studentSearch")?.value || "").toLowerCase();
+  const programme = filterProgramme.value.toLowerCase();
   const company = filterCompany.value.toLowerCase();
   const type = filterType.value.toLowerCase();
   const pack = filterPackage.value;
 
 document.querySelectorAll("#studentTable tr").forEach(row => {
     const text = row.innerText.toLowerCase();
+    const rowProgramme = (row.dataset.programme || "").toLowerCase();
     const rowCompany = (row.dataset.company || "").toLowerCase();
     const rowType = (row.dataset.type || "").toLowerCase();
     const rowPack = parseFloat(row.dataset.package || 0);
@@ -441,6 +466,7 @@ document.querySelectorAll("#studentTable tr").forEach(row => {
     if (searchValue && !text.includes(searchValue)) show = false;
     
     // ✅ FILTERS
+    if (programme && rowProgramme !== programme) show = false;
     if (company && rowCompany !== company) show = false;
     if (type && rowType !== type) show = false;
 
