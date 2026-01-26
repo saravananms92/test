@@ -201,6 +201,17 @@ function setDefaultCompanyStats() {
   ⬇️
   </button>
 
+<h2>Package Distribution</h2>
+<div class="charts">
+  <div class="chart-wrapper">
+    <button class="download-btn"
+      onclick="downloadChart('packageDistChart','Package Distribution.jpg')">
+      ⬇️
+    </button>
+    <div id="packageDistChart" class="chart-box"></div>
+  </div>
+</div>
+
 <!-- TABLE -->
 <h2 id="Placed Students">Details of Placed Students</h2>
     
@@ -211,7 +222,7 @@ function setDefaultCompanyStats() {
     <button onclick="downloadReport()">Download Report</button>
   </h3>
 </div>
-    
+
 <script>
 function downloadReport() {
   if (!sessionStorage.getItem("admin")) {
