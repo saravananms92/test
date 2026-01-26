@@ -99,6 +99,7 @@ async function fetchAndDrawCharts() {
     drawCoreNonCoreChart(data);
     drawCompanyVsStudentsChart(data);
     drawTopPackageChart(data);
+    drawPackageDistribution(data);
     populateStudentTable(data);
     populateProgrammeFilter();
     populateCompanyFilter();
@@ -294,6 +295,46 @@ function drawTopPackageChart(data) {
     vAxis: { title: 'Package (LPA)', minValue: 0 },
     legend: { position: 'none' },
     annotations: { alwaysOutside: true }
+  });
+}
+
+function drawPackageDistribution(data) {
+  const el = document.getElementById("packageDistChart");
+  if (!el || !data.students) return;
+
+  let ranges = {
+    "0–3 LPA": 0,
+    "3–6 LPA": 0,
+    "6–10 LPA": 0,
+    "10+ LPA": 0
+  };
+
+  data.students.forEach(s => {
+    let pkg = parseFloat(s.package || s.Package || 0);
+
+    if (pkg > 0 && pkg <= 3) ranges["0–3 LPA"]++;
+    else if (pkg > 3 && pkg <= 6) ranges["3–6 LPA"]++;
+    else if (pkg > 6 && pkg <= 10) ranges["6–10 LPA"]++;
+    else if (pkg > 10) ranges["10+ LPA"]++;
+  });
+
+  const rows = [
+    ["Package Range", "Students", { role: "style" }],
+    ["0–3 LPA", ranges["0–3 LPA"], "#90caf9"],
+    ["3–6 LPA", ranges["3–6 LPA"], "#42a5f5"],
+    ["6–10 LPA", ranges["6–10 LPA"], "#1e88e5"],
+    ["10+ LPA", ranges["10+ LPA"], "#0d47a1"]
+  ];
+
+  const table = google.visualization.arrayToDataTable(rows);
+
+  new google.visualization.ColumnChart(el).draw(table, {
+    height: 420,
+    bar: { groupWidth: "55%" },
+    legend: { position: "none" },
+    chartArea: { left: 70, top: 60, width: "70%", height: "65%" },
+    vAxis: { title: "No. of Students", minValue: 0 },
+    hAxis: { title: "Package Range" }
   });
 }
 
