@@ -300,7 +300,10 @@ function drawTopPackageChart(data) {
 
 function drawPackageDistribution(data) {
   const el = document.getElementById("packageDistChart");
-  if (!el || !data.students) return;
+  if (!el || !data.placedStudents || data.placedStudents.length === 0) {
+    if (el) el.innerHTML = "<b>No package data available</b>";
+    return;
+  }
 
   let ranges = {
     "0–3 LPA": 0,
@@ -309,8 +312,8 @@ function drawPackageDistribution(data) {
     "10+ LPA": 0
   };
 
-  data.students.forEach(s => {
-    let pkg = parseFloat(s.package || s.Package || 0);
+  data.placedStudents.forEach(s => {
+    let pkg = parseFloat(s.package || 0);
 
     if (pkg > 0 && pkg <= 3) ranges["0–3 LPA"]++;
     else if (pkg > 3 && pkg <= 6) ranges["3–6 LPA"]++;
@@ -320,9 +323,9 @@ function drawPackageDistribution(data) {
 
   const rows = [
     ["Package Range", "Students", { role: "style" }],
-    ["0–3 LPA", ranges["0–3 LPA"], "#90caf9"],
-    ["3–6 LPA", ranges["3–6 LPA"], "#42a5f5"],
-    ["6–10 LPA", ranges["6–10 LPA"], "#1e88e5"],
+    ["0–3 LPA", ranges["0–3 LPA"], "#b3e5fc"],
+    ["3–6 LPA", ranges["3–6 LPA"], "#64b5f6"],
+    ["6–10 LPA", ranges["6–10 LPA"], "#2196f3"],
     ["10+ LPA", ranges["10+ LPA"], "#0d47a1"]
   ];
 
@@ -334,7 +337,8 @@ function drawPackageDistribution(data) {
     legend: { position: "none" },
     chartArea: { left: 70, top: 60, width: "70%", height: "65%" },
     vAxis: { title: "No. of Students", minValue: 0 },
-    hAxis: { title: "Package Range" }
+    hAxis: { title: "Package Range" },
+    animation: { startup: true, duration: 800, easing: "out" }
   });
 }
 
