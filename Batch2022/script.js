@@ -535,7 +535,7 @@ function buildStudentGrid(data) {
 
   const map = {};
 
-  // Group students by company
+  // Group by company
   (data.placedStudents || []).forEach(s => {
     if (!map[s.company]) map[s.company] = [];
     map[s.company].push(s);
@@ -544,11 +544,10 @@ function buildStudentGrid(data) {
   Object.keys(map).sort().forEach(company => {
     const students = map[company];
 
-    // Collect unique packages
+    // unique packages
     const pkgs = [...new Set(students.map(s => s.package).filter(Boolean))];
     const pkgText = pkgs.join(", ") + " LPA";
 
-    // Company Section
     const section = document.createElement("div");
     section.className = "company-section";
 
