@@ -411,31 +411,6 @@ function drawCompanyLegend(data, colors) {
   });
 }
 
-function drawCompanyLegend(data, colors) {
-  const legendContainer = document.getElementById('companyLegend');
-  if (!legendContainer) return;
-
-  legendContainer.innerHTML = `
-    <div class="legend-title">Companies</div>
-    <div class="legend-grid"></div>
-  `;
-
-  const grid = legendContainer.querySelector(".legend-grid");
-
-  data.forEach((item, i) => {
-    const color = colors[i % colors.length];
-
-    const div = document.createElement("div");
-    div.className = "legend-item";
-    div.innerHTML = `
-      <span class="legend-color" style="background:${color}"></span>
-      <span class="legend-text" title="${item.company}">${item.company}</span>
-    `;
-
-    grid.appendChild(div);
-  });
-}
-
 function drawTopPackageChart(data) {
   const container = document.getElementById('topPackageChart');
   if (!data.topPackages || data.topPackages.length === 0) {
@@ -663,10 +638,11 @@ document.querySelectorAll("#filterProgramme, #filterCompany, #filterType, #filte
 // ───────── Apply Filters ─────────
 function applyFilters() {
   const searchValue = (document.getElementById("studentSearch")?.value || "").toLowerCase();
-  const programme = filterProgramme.value.toLowerCase();
-  const company = filterCompany.value.toLowerCase();
-  const type = filterType.value.toLowerCase();
-  const pack = filterPackage.value;
+  const programme = document.getElementById("filterProgramme")?.value.toLowerCase() || "";
+const company   = document.getElementById("filterCompany")?.value.toLowerCase() || "";
+const type      = document.getElementById("filterType")?.value.toLowerCase() || "";
+const pack      = document.getElementById("filterPackage")?.value || "";
+
 
   document.querySelectorAll("#studentTable tr").forEach(row => {
     const text = row.innerText.toLowerCase();
@@ -768,6 +744,34 @@ window.addEventListener('resize', () => {
     drawPackageDistribution(dataGlobal);
   }, 300);
 });
+********
+function drawChartById(id) {
+  if (!dataGlobal) return;
+
+  switch (id) {
+    case "statusChart":
+      drawPlacementStatusChart(dataGlobal);
+      break;
+    case "companyChart":
+      drawCompanyChart(dataGlobal);
+      break;
+    case "programmeChart":
+      drawProgrammeChart(dataGlobal);
+      break;
+    case "coreNonCoreChart":
+      drawCoreNonCoreChart(dataGlobal);
+      break;
+    case "companyStudentsChart":
+      drawCompanyVsStudentsChart(dataGlobal);
+      break;
+    case "topPackageChart":
+      drawTopPackageChart(dataGlobal);
+      break;
+    case "packageDistChart":
+      drawPackageDistribution(dataGlobal);
+      break;
+  }
+}
 
 /************************************************
  * HIGH QUALITY DOWNLOAD CHART FUNCTION
