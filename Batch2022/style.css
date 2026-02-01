@@ -944,7 +944,25 @@ tbody tr:hover td {background: #ffe0b2;}
 #lastUpdated {color: #5c5a5a; font-size: 14px;}
 .footer-bottom .disclaimer {color: #fc0303; font-size: 14px;}
 
+/* Force vertical company layout */
+#studentGrid {
+  display: block !important;
+}
 
+/* Each company as full row */
+.company-section {
+  width: 100%;
+  display: block;
+  margin: 45px 0;
+}
+
+/* Student row grid inside company */
+.company-section .student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 14px;
+  justify-items: center;
+}
 .company-section {
   margin: 45px 0;
 }
