@@ -1,3 +1,15 @@
+function setProgress(p, text) {
+  const bar = document.getElementById("progressBar");
+  const txt = document.getElementById("progressText");
+  if (bar) bar.style.width = p + "%";
+  if (txt) txt.innerText = text;
+}
+
+function showDashboard() {
+  document.getElementById("globalLoader").style.display = "none";
+  document.getElementById("dashboardContent").style.display = "block";
+}
+
 function switchBatch(folder) {
   if (!folder) return;
   window.location.href = "../" + folder + "/";
@@ -82,32 +94,43 @@ function init() {
  ************************************************/
 async function fetchAndDrawCharts() {
   try {
-    console.log('Fetching placement data...');
+    setProgress(5, "Connecting to server...");
 
     const response = await fetch(DATA_URL, { mode: 'cors' });
     if (!response.ok) throw new Error('HTTP error ' + response.status);
 
-    const data = await response.json();
-    console.log('DATA RECEIVED:', data);
+    setProgress(25, "Downloading placement data...");
 
+    const data = await response.json();
     dataGlobal = data;
 
+    setProgress(45, "Updating KPI cards...");
     updateKPIs(data);
+
+    setProgress(55, "Rendering charts...");
     drawPlacementStatusChart(data);
     drawCompanyChart(data);
     drawProgrammeChart(data);
     drawCoreNonCoreChart(data);
+
+    setProgress(70, "Building analytics...");
     drawCompanyVsStudentsChart(data);
     drawTopPackageChart(data);
     drawPackageDistribution(data);
+
+    setProgress(85, "Populating students...");
     populateStudentTable(data);
     populateProgrammeFilter();
     populateCompanyFilter();
     buildCompanyPackageList(data);
     buildStudentGrid(data);
 
-    // Apply admin UI based on session
+    setProgress(95, "Applying admin UI...");
     applyAdminUI();
+
+    setProgress(100, "Finalizing...");
+
+    setTimeout(showDashboard, 400);
 
   } catch (err) {
     console.error('FETCH ERROR:', err);
