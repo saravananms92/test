@@ -967,28 +967,28 @@ tbody tr:hover td {background: #ffe0b2;}
 }
 
 .student-name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   margin-top: 6px;
 }
 
 .student-prog {
-  font-size: 10px;
+  font-size: 8px;
   color: #555;
 }
 .student-reg {
-  font-size: 8px;
+  font-size: 6px;
   color: #777;
 }
 
 .student-company {
   font-size: 10px;
-  color: #333;
-  margin-top: 2px;
+  color: #0d6efd;
+  font-weight: 500;
 }
 
 .student-pkg {
   font-size: 8px;
-  color: #0d6efd;
-  font-weight: 600;
+  color: #333;
+  font-weight: 400;
 }
