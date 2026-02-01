@@ -526,6 +526,51 @@ document.querySelectorAll("#studentTable tr").forEach(row => {
   });
 }
 
+function buildCompanyPackageList(data) {
+  const div = document.getElementById("companyPackageList");
+  if (!div) return;
+
+  const map = {};
+
+  (data.placedStudents || []).forEach(s => {
+    if (!map[s.company]) {
+      map[s.company] = [];
+    }
+    if (s.package) map[s.company].push(s.package);
+  });
+
+  let html = `<h4>Company & Package Details</h4><ul>`;
+  Object.keys(map).sort().forEach(c => {
+    const pkgs = map[c].join(", ");
+    html += `<li><b>${c}</b> — ${pkgs} LPA</li>`;
+  });
+  html += `</ul>`;
+
+  div.innerHTML = html;
+}
+
+function buildStudentGrid(data) {
+  const grid = document.getElementById("studentGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  (data.placedStudents || []).forEach(s => {
+    const photoUrl = getPhotoUrl(s.photo);
+
+    const card = document.createElement("div");
+    card.className = "student-card";
+
+    card.innerHTML = `
+      <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/90x110?text=No+Photo'">
+      <div class="student-name">${s.name || ""}</div>
+      <div class="student-prog">${s.programme || ""}</div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
 /************************************************
  * WINDOW RESIZE REDRAW
  ************************************************/
