@@ -56,6 +56,25 @@
     <p>Loading data and charts… Please wait.</p>
   </div>
 </div>
+<div id="globalLoader" class="global-loader">
+  <div id="progressText" class="progress-text">Starting...</div>
+
+  <div class="progress-bar-wrap">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <div class="skeleton-row">
+    <div class="skeleton card"></div>
+    <div class="skeleton card"></div>
+    <div class="skeleton card"></div>
+    <div class="skeleton card"></div>
+  </div>
+
+  <div class="skeleton-chart"></div>
+</div>
+
+<div id="dashboardContent" style="display:none;">
+  <!-- YOUR EXISTING PAGE CONTENT -->
 
   <!-- KPI CARDS -->
 <h2 id="Overview">Placement Overview</h2>
@@ -589,7 +608,7 @@ fetch("gallery.json")
     document.getElementById("loading").style.display = "none";
   };
 </script>
-
+</div>
 </body>
 </html>
 
