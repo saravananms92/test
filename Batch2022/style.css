@@ -976,3 +976,19 @@ tbody tr:hover td {background: #ffe0b2;}
   font-size: 12px;
   color: #555;
 }
+.student-reg {
+  font-size: 11px;
+  color: #777;
+}
+
+.student-company {
+  font-size: 12px;
+  color: #333;
+  margin-top: 2px;
+}
+
+.student-pkg {
+  font-size: 11px;
+  color: #0d6efd;
+  font-weight: 600;
+}
