@@ -945,6 +945,40 @@ tbody tr:hover td {background: #ffe0b2;}
 .footer-bottom .disclaimer {color: #fc0303; font-size: 14px;}
 
 
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.student-card {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.student-card img {
+  width: 90px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.student-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.student-prog {
+  font-size: 12px;
+  color: #555;
+}
+
+
 
 
 
