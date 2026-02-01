@@ -103,6 +103,7 @@ async function fetchAndDrawCharts() {
     populateStudentTable(data);
     populateProgrammeFilter();
     populateCompanyFilter();
+    buildCompanyPackageList(data);
     buildStudentGrid(data);
 
     // Apply admin UI based on session
