@@ -527,67 +527,54 @@ document.querySelectorAll("#studentTable tr").forEach(row => {
   });
 }
 
-function buildStudentGrid(data) {
-  const container = document.getElementById("studentGrid");
-  if (!container) return;
 
-  container.innerHTML = "";
+function buildCompanyPackageList(data) {
+  const div = document.getElementById("companyPackageList");
+  if (!div) return;
 
   const map = {};
 
-  // Group students by company
   (data.placedStudents || []).forEach(s => {
-    if (!map[s.company]) map[s.company] = [];
-    map[s.company].push(s);
+    if (!map[s.company]) {
+      map[s.company] = new Set();   // use Set
+    }
+    if (s.package) map[s.company].add(s.package);
   });
 
-  Object.keys(map).sort().forEach(company => {
-    const students = map[company];
+  let html = `<h4>Company & Package Details</h4><ul>`;
 
-    // Collect unique packages
-    const pkgs = [...new Set(students.map(s => s.package).filter(Boolean))];
-    const pkgText = pkgs.join(", ") + " LPA";
+  Object.keys(map).sort().forEach(c => {
+    const pkgs = [...map[c]].join(", ");
+    html += `<li><b>${c}</b> — ${pkgs} LPA</li>`;
+  });
 
-    const section = document.createElement("div");
-    section.className = "company-section";
+  html += `</ul>`;
+  div.innerHTML = html;
+}
 
-    section.innerHTML = `
-      <div class="company-title">${company}</div>
-      <div class="company-package">${pkgText}</div>
+function buildStudentGrid(data) {
+  const grid = document.getElementById("studentGrid");
+  if (!grid) return;
 
-      <div class="placed-grid">
-        <div class="placed-header">
-          <span>Photo</span>
-          <span>Name</span>
-          <span>Register No</span>
-          <span>Program</span>
-          <span>Company</span>
-          <span>Package</span>
-        </div>
-      </div>
+  grid.innerHTML = "";
+
+  (data.placedStudents || []).forEach(s => {
+    const photoUrl = getPhotoUrl(s.photo);
+
+    const card = document.createElement("div");
+    card.className = "student-card";
+
+    card.innerHTML = `
+      <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/90x110?text=No+Photo'">
+
+      <div class="student-name">${s.name || ""}</div>
+      <div class="student-reg">${s.registerNo || ""}</div>
+      <div class="student-prog">${s.programme || ""}</div>
+      <div class="student-company">${s.company || ""}</div>
+      <div class="student-pkg">${s.package || ""} LPA</div>
     `;
 
-    const grid = section.querySelector(".placed-grid");
-
-    students.forEach(s => {
-      const photoUrl = getPhotoUrl(s.photo);
-
-      const row = document.createElement("div");
-      row.className = "placed-row";
-
-      row.innerHTML = `
-        <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/60x75?text=No+Photo'">
-        <span class="name">${s.name || ""}</span>
-        <span>${s.regno || ""}</span>
-        <span>${s.programme || ""}</span>
-        <span>${s.company || ""}</span>
-        <span class="pkg">${s.package || ""} LPA</span>
-      `;
-
-      grid.appendChild(row);
-    });
-
-    container.appendChild(section);
+    grid.appendChild(card);
   });
 }
 
