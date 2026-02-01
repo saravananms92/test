@@ -103,9 +103,7 @@ async function fetchAndDrawCharts() {
     populateStudentTable(data);
     populateProgrammeFilter();
     populateCompanyFilter();
-    
-buildCompanyPackageList(data);
-buildStudentGrid(data);
+    buildStudentGrid(data);
 
     // Apply admin UI based on session
     applyAdminUI();
@@ -529,48 +527,55 @@ document.querySelectorAll("#studentTable tr").forEach(row => {
   });
 }
 
-function buildCompanyPackageList(data) {
-  const div = document.getElementById("companyPackageList");
-  if (!div) return;
+function buildStudentGrid(data) {
+  const container = document.getElementById("studentGrid");
+  if (!container) return;
+
+  container.innerHTML = "";
 
   const map = {};
 
+  // Group students by company
   (data.placedStudents || []).forEach(s => {
-    if (!map[s.company]) {
-      map[s.company] = [];
-    }
-    if (s.package) map[s.company].push(s.package);
+    if (!map[s.company]) map[s.company] = [];
+    map[s.company].push(s);
   });
 
-  let html = `<h4>Company & Package Details</h4><ul>`;
-  Object.keys(map).sort().forEach(c => {
-    const pkgs = map[c].join(", ");
-    html += `<li><b>${c}</b> — ${pkgs} LPA</li>`;
-  });
-  html += `</ul>`;
+  Object.keys(map).sort().forEach(company => {
+    const students = map[company];
 
-  div.innerHTML = html;
-}
+    // Collect unique packages
+    const pkgs = [...new Set(students.map(s => s.package).filter(Boolean))];
+    const pkgText = pkgs.join(", ") + " LPA";
 
-function buildStudentGrid(data) {
-  const grid = document.getElementById("studentGrid");
-  if (!grid) return;
+    // Company Section
+    const section = document.createElement("div");
+    section.className = "company-section";
 
-  grid.innerHTML = "";
-
-  (data.placedStudents || []).forEach(s => {
-    const photoUrl = getPhotoUrl(s.photo);
-
-    const card = document.createElement("div");
-    card.className = "student-card";
-
-    card.innerHTML = `
-      <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/90x110?text=No+Photo'">
-      <div class="student-name">${s.name || ""}</div>
-      <div class="student-prog">${s.programme || ""}</div>
+    section.innerHTML = `
+      <div class="company-title">${company}</div>
+      <div class="company-package">${pkgText}</div>
+      <div class="student-grid"></div>
     `;
 
-    grid.appendChild(card);
+    const grid = section.querySelector(".student-grid");
+
+    students.forEach(s => {
+      const photoUrl = getPhotoUrl(s.photo);
+
+      const card = document.createElement("div");
+      card.className = "student-card";
+
+      card.innerHTML = `
+        <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/90x110?text=No+Photo'">
+        <div class="student-name">${s.name || ""}</div>
+        <div class="student-prog">${s.programme || ""}</div>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    container.appendChild(section);
   });
 }
 
