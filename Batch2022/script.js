@@ -1,72 +1,24 @@
-let dataReady = false;
-let chartsReady = false;
-
-window.dataLoaded = function () {
-  dataReady = true;
-  tryHideLoader();
-};
-
-window.chartsLoaded = function () {
-  chartsReady = true;
-  tryHideLoader();
-};
-
-function tryHideLoader() {
-  if (dataReady && chartsReady) {
-    const loader = document.getElementById("loading");
-    if (loader) loader.classList.add("hide");
-  }
-}
-
-function switchBatch(value) {
-  if (!value) return;
-
-  const base = "/svcemechplacement/";
-
-  if (value === "home") {
-    window.location.href = base + "index.html";
-  } else {
-    window.location.href = base + value + "/index.html";
-  }
-}
-
-function setCurrentBatch() {
-  const path = window.location.pathname.toLowerCase();
-  const select = document.getElementById("batchSwitcher");
-  if (!select) return;
-
-  if (path.includes("batch2022")) {
-    select.value = "Batch2022";
-  } 
-  else if (path.includes("batch2023")) {
-    select.value = "Batch2023";
-  } 
-  else {
-    select.value = "home";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", setCurrentBatch);
+/************************************************
+ * GLOBAL STATE
+ ************************************************/
+const DATA_URL = 'https://script.google.com/macros/s/AKfycbxpK-mCvnnjvKx7kYT8wGWaPyqOx_ky2SvHunhLzD5gbzv6fGy3QsZUmB6HdpvvN4LH/exec';
+let dataGlobal = null;
+let resizeTimer;
 
 /************************************************
- * ADMIN SYSTEM (SINGLE SOURCE)
+ * ADMIN SYSTEM
  ************************************************/
 function openAdminLogin() {
   const pw = prompt("Enter Admin Password:");
-
   if (pw === "1234") {
     sessionStorage.setItem("admin", "true");
-    applyAdminUI();
-    location.reload(); // ✅ auto refresh
-  } else {
-    alert("Invalid Password");
-  }
+    location.reload();
+  } else alert("Invalid Password");
 }
 
 function logout() {
   sessionStorage.removeItem("admin");
-  applyAdminUI();
-  location.reload(); // ✅ auto refresh
+  location.reload();
 }
 
 function applyAdminUI() {
@@ -76,80 +28,48 @@ function applyAdminUI() {
     el.style.display = isAdmin ? "block" : "none";
   });
 
-const loginBtn = document.getElementById("adminLoginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-
-if (loginBtn) loginBtn.style.display = isAdmin ? "none" : "inline-block";
-if (logoutBtn) logoutBtn.style.display = isAdmin ? "inline-block" : "none";
-
-  toggleAdminView(isAdmin);
-}
-
-function toggleAdminView(isAdmin) {
   document.querySelectorAll('.adminCol').forEach(col => {
     col.style.display = isAdmin ? "" : "none";
   });
+
+  const loginBtn = document.getElementById("adminLoginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (loginBtn) loginBtn.style.display = isAdmin ? "none" : "inline-block";
+  if (logoutBtn) logoutBtn.style.display = isAdmin ? "inline-block" : "none";
 }
 
 /************************************************
- * GOOGLE CHARTS LOADER
+ * GOOGLE CHARTS
  ************************************************/
 google.charts.load('current', { packages: ['corechart'] });
 google.charts.setOnLoadCallback(init);
-
-/************************************************
- * GLOBAL VARIABLES
- ************************************************/
-const DATA_URL = 'https://script.google.com/macros/s/AKfycbxpK-mCvnnjvKx7kYT8wGWaPyqOx_ky2SvHunhLzD5gbzv6fGy3QsZUmB6HdpvvN4LH/exec';
-let dataGlobal = null;
 
 /************************************************
  * INIT
  ************************************************/
 function init() {
   fetchAndDrawCharts();
-  const charts = document.querySelectorAll('.chart-box');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting) {
-        drawChartById(entry.target.id);
-      }
-    });
-  }, {threshold:0.1});
-
-  charts.forEach(c => observer.observe(c));
 }
 
 /************************************************
- * FETCH DATA AND DRAW ALL CHARTS
+ * FETCH + BUILD
  ************************************************/
 async function fetchAndDrawCharts() {
   try {
-    console.log('Fetching placement data...');
-
     let data;
+    const cached = sessionStorage.getItem('placementData');
 
-    const cachedData = sessionStorage.getItem('placementData');
-
-    if (cachedData) {
-      data = JSON.parse(cachedData);
-      console.log("Loaded from cache");
-    } else {
-      const response = await fetch(DATA_URL);
-      if (!response.ok) throw new Error('HTTP error ' + response.status);
-
-      data = await response.json();
+    if (cached) data = JSON.parse(cached);
+    else {
+      const res = await fetch(DATA_URL);
+      data = await res.json();
       sessionStorage.setItem('placementData', JSON.stringify(data));
-      console.log("Loaded from API");
     }
 
     dataGlobal = data;
-    console.log('DATA RECEIVED:', data);
 
-    // ✅ KPI
     updateKPIs(data);
-
-    // ✅ Charts
     drawPlacementStatusChart(data);
     drawCompanyChart(data);
     drawProgrammeChart(data);
@@ -158,49 +78,30 @@ async function fetchAndDrawCharts() {
     drawTopPackageChart(data);
     drawPackageDistribution(data);
 
-    // ✅ TABLE
     populateStudentTable(data);
     populateProgrammeFilter();
     populateCompanyFilter();
     buildStudentGrid(data);
-    
-    // ✅ Admin UI
+
     applyAdminUI();
 
-    // ✅ Hide loader
-    const loader = document.getElementById("loading");
-    if (loader) loader.style.display = "none";
+    document.getElementById("loading")?.style.setProperty("display", "none");
 
-  } catch (err) {
-    console.error('FETCH ERROR:', err);
-    document.body.insertAdjacentHTML(
-      'afterbegin',
-      "<p style='color:red;text-align:center'>⚠ Failed to load placement data</p>"
-    );
+  } catch (e) {
+    console.error(e);
+    alert("Failed to load data");
   }
-  // ✅ Remove skeletons + reveal UI
-document.querySelectorAll(".skeleton").forEach(el => {
-  el.classList.remove("skeleton", "skeleton-card", "skeleton-chart");
-});
-
-document.querySelectorAll(".reveal").forEach(el => {
-  requestAnimationFrame(() => el.classList.add("show"));
-});
 }
 
 /************************************************
- * KPI CARDS
+ * KPI
  ************************************************/
 function updateKPIs(data) {
-  const percent =
-    data.eligibleStudents > 0
-      ? ((data.placedCount / data.eligibleStudents) * 100).toFixed(1)
-      : 0;
+  const percent = data.eligibleStudents > 0
+    ? ((data.placedCount / data.eligibleStudents) * 100).toFixed(1)
+    : 0;
 
-  const set = (id, value) => {
-    const el = document.querySelector(`#${id} strong`);
-    if (el) el.innerText = value;
-  };
+  const set = (id, v) => document.querySelector(`#${id} strong`) && (document.querySelector(`#${id} strong`).innerText = v);
 
   set("total", data.totalStudents || 0);
   set("opted", data.optedStudents || 0);
@@ -210,617 +111,177 @@ function updateKPIs(data) {
 }
 
 /************************************************
- * CHART FUNCTIONS
+ * CHARTS
  ************************************************/
 function drawPlacementStatusChart(data) {
-  const rows = [
+  const table = google.visualization.arrayToDataTable([
     ['Status', 'Count'],
     ['Placed', data.placedCount || 0],
     ['Not Placed', (data.eligibleStudents || 0) - (data.placedCount || 0)]
-  ];
+  ]);
 
-  const table = google.visualization.arrayToDataTable(rows);
-  new google.visualization.PieChart(document.getElementById('statusChart')).draw(table, {
-    title: 'Placement Status',
-    pieHole: 0.4,
-    chartArea: { width: '75%', height: '75%' }
-  });
+  new google.visualization.PieChart(statusChart).draw(table, { pieHole: .4 });
 }
 
 function drawCompanyChart(data) {
   const map = {};
-  (data.placedStudents || []).forEach(s => {
-    const type = s.type || 'Unknown';
-    map[type] = (map[type] || 0) + 1;
-  });
+  (data.placedStudents || []).forEach(s => map[s.type || "Unknown"] = (map[s.type || "Unknown"] || 0) + 1);
 
   const rows = [['Company Type', 'Count']];
   Object.keys(map).forEach(k => rows.push([k, map[k]]));
 
-  const table = google.visualization.arrayToDataTable(rows);
-  new google.visualization.PieChart(document.getElementById('companyChart')).draw(table, {
-    title: 'Company Type Distribution',
-    pieHole: 0.4,
-    chartArea: { width: '75%', height: '75%' }
-  });
+  new google.visualization.PieChart(companyChart)
+    .draw(google.visualization.arrayToDataTable(rows), { pieHole: .4 });
 }
 
 function drawProgrammeChart(data) {
-  const container = document.getElementById('programmeChart');
-  if (!data.programmeCount || Object.keys(data.programmeCount).length === 0) {
-    container.innerHTML = '<b>No Programme data available</b>';
-    return;
-  }
+  if (!data.programmeCount) return;
 
-  const colors = ['#20c997', '#0dcaf0'];
-  const rows = [['Programme', 'Placed Students', { role: 'annotation' }, { role: 'style' }]];
+  const rows = [['Programme', 'Placed', { role: 'annotation' }]];
+  let max = 1;
 
-  let i = 0;
-  let maxVal = 0;
-
-  for (const p in data.programmeCount) {
-    let val = Number(data.programmeCount[p]) || 0;
-    maxVal = Math.max(maxVal, val);
-    rows.push([p, val, val.toString(), colors[i % colors.length]]);
-    i++;
-  }
-
-  const table = google.visualization.arrayToDataTable(rows);
-
-  new google.visualization.ColumnChart(container).draw(table, {
-    height: '100%',
-    chartArea: { left: 70, top: 30, width: '85%', height: '70%' },
-    vAxis: {
-      title: 'Placed Students',
-      format: '0',
-      viewWindow: { min: 0, max: maxVal + 2 }
-    },
-    legend: { position: 'none' },
-    annotations: { alwaysOutside: true, textStyle: { fontSize: 12, bold: true } },
-    animation: { startup: true, duration: 800, easing: 'out' }
+  Object.entries(data.programmeCount).forEach(([k, v]) => {
+    v = Number(v) || 0;
+    max = Math.max(max, v);
+    rows.push([k, v, v.toString()]);
   });
+
+  new google.visualization.ColumnChart(programmeChart)
+    .draw(google.visualization.arrayToDataTable(rows), { vAxis: { viewWindow: { max: max + 2 } } });
 }
 
 function drawCoreNonCoreChart(data) {
-  const el = document.getElementById('coreNonCoreChart');
-  if (!el || !data.coreNonCoreCount) return;
+  if (!data.coreNonCoreCount) return;
 
   const rows = [['Programme', 'Core', { role: 'annotation' }, 'Non-Core', { role: 'annotation' }]];
+  let max = 1;
 
-  let maxVal = 0;
-
-  Object.keys(data.coreNonCoreCount).forEach(p => {
-    let c = Number(data.coreNonCoreCount[p].Core) || 0;
-    let n = Number(data.coreNonCoreCount[p].NonCore) || 0;
-    maxVal = Math.max(maxVal, c, n);
-    rows.push([p, c, c.toString(), n, n.toString()]);
+  Object.entries(data.coreNonCoreCount).forEach(([k, v]) => {
+    const c = Number(v.Core) || 0;
+    const n = Number(v.NonCore) || 0;
+    max = Math.max(max, c, n);
+    rows.push([k, c, c.toString(), n, n.toString()]);
   });
 
-  const table = google.visualization.arrayToDataTable(rows);
-
-  new google.visualization.ColumnChart(el).draw(table, {
-    height: '100%',
-    chartArea: { left: 70, top: 40, width: '85%', height: '70%' },
-    vAxis: {
-      title: 'No. of Students',
-      format: '0',
-      viewWindow: { min: 0, max: maxVal + 2 }
-    },
-    colors: ['#1e88e5', '#fb8c00'],
-    legend: { position: 'bottom' },
-    bar: { groupWidth: '55%' },
-    annotations: { alwaysOutside: true, textStyle: { fontSize: 12, bold: true } },
-    animation: { startup: true, duration: 800, easing: 'out' }
-  });
+  new google.visualization.ColumnChart(coreNonCoreChart)
+    .draw(google.visualization.arrayToDataTable(rows), { vAxis: { viewWindow: { max: max + 2 } } });
 }
 
 function drawCompanyVsStudentsChart(data) {
-  const container = document.getElementById('companyStudentsChart');
-  if (!container) return;
+  if (!data.Company_Filter?.length) return;
 
-  if (!data.Company_Filter || data.Company_Filter.length === 0) {
-    container.innerHTML = '<b>No company placement data available</b>';
-    return;
-  }
+  const sorted = data.Company_Filter.map(r => ({
+    company: r["Company Name"],
+    count: Number(r["Total students placed"]) || 0
+  })).filter(r => r.count > 0).sort((a, b) => b.count - a.count);
 
-  const sortedData = data.Company_Filter
-    .map(row => ({
-      company: row['Company Name'],
-      count: Number(row['Total students placed']) || 0
-    }))
-    .filter(item => item.count > 0)
-    .sort((a, b) => b.count - a.count);
+  const rows = [['Company', 'Students', { role: 'annotation' }]];
+  let max = 1;
 
-  let maxVal = Math.max(...sortedData.map(d => d.count));
-
-  const colors = [
-    "#0d6efd", "#198754", "#dc3545", "#fd7e14", "#6f42c1",
-    "#20c997", "#0dcaf0", "#6610f2", "#adb5bd", "#212529",
-    "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
-    "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
-  ];
-
-  const rows = [['Company', 'Students Placed', { role: 'annotation' }, { role: 'style' }]];
-
-  sortedData.forEach((item, i) => {
-    rows.push([
-      item.company,
-      item.count,
-      item.count.toString(),
-      `color: ${colors[i % colors.length]}`
-    ]);
+  sorted.forEach(s => {
+    max = Math.max(max, s.count);
+    rows.push([s.company, s.count, s.count.toString()]);
   });
 
-  const table = google.visualization.arrayToDataTable(rows);
-
-  const options = {
-  title: 'Company-wise Student Placements',
-  height: 480,
-  chartArea: {
-    left: 90,
-    top: 60,
-    width: '88%',
-    height: '85%'   // 🔥 Increased from 65% → 85%
-  },
-  vAxis: {
-    title: 'No. of Students',
-    format: '0',
-    viewWindow: { min: 0, max: maxVal + 1 },
-    gridlines: { count: maxVal + 2 }
-  },
-  hAxis: {
-    textPosition: 'none'
-  },
-  legend: { position: 'none' },
-  bar: { groupWidth: "65%" },
-  annotations: {
-    alwaysOutside: true,
-    textStyle: { fontSize: 12, bold: true }
-  }
-};
-
-  const chart = new google.visualization.ColumnChart(container);
-  chart.draw(table, options);
-
-  drawCompanyLegend(sortedData, colors);
-}
-
-
-function drawCompanyLegend(data, colors) {
-  const legendContainer = document.getElementById('companyLegend');
-  if (!legendContainer) return;
-
-  legendContainer.innerHTML = `
-    <div class="legend-title">Companies</div>
-    <div class="legend-grid"></div>
-  `;
-
-  const grid = legendContainer.querySelector(".legend-grid");
-
-  data.forEach((item, i) => {
-    const color = colors[i % colors.length];
-
-    const div = document.createElement("div");
-    div.className = "legend-item";
-    div.innerHTML = `
-      <span class="legend-color" style="background:${color}"></span>
-      <span class="legend-text" title="${item.company}">${item.company}</span>
-    `;
-
-    grid.appendChild(div);
-  });
+  new google.visualization.ColumnChart(companyStudentsChart)
+    .draw(google.visualization.arrayToDataTable(rows), { vAxis: { viewWindow: { max: max + 1 } } });
 }
 
 function drawTopPackageChart(data) {
-  const container = document.getElementById('topPackageChart');
-  if (!data.topPackages || data.topPackages.length === 0) {
-    container.innerHTML = '<b>No package data available</b>';
-    return;
-  }
+  if (!data.topPackages) return;
 
-  const colors = ['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e'];
-  const rows = [['Student','Package',{ role: 'annotation' },{ role: 'style' }]];
+  const rows = [['Student', 'Package', { role: 'annotation' }]];
+  let max = 1;
 
-  let maxVal = 0;
-
-  data.topPackages.forEach((s, i) => {
-    let v = Number(s.package) || 0;
-    maxVal = Math.max(maxVal, v);
-    rows.push([s.name, v, v + ' LPA', colors[i]]);
+  data.topPackages.forEach(s => {
+    const v = Number(s.package) || 0;
+    max = Math.max(max, v);
+    rows.push([s.name, v, v + " LPA"]);
   });
 
-  const table = google.visualization.arrayToDataTable(rows);
-
-  new google.visualization.ColumnChart(container).draw(table, {
-    height: 400,
-    chartArea: { left: 60, top: 20, width: '60%', height: '75%' },
-    vAxis: {
-      title: 'Package (LPA)',
-      viewWindow: { min: 0, max: maxVal + 2 }
-    },
-    legend: { position: 'none' },
-    annotations: { alwaysOutside: true, textStyle: { fontSize: 12, bold: true } }
-  });
+  new google.visualization.ColumnChart(topPackageChart)
+    .draw(google.visualization.arrayToDataTable(rows), { vAxis: { viewWindow: { max: max + 2 } } });
 }
 
 function drawPackageDistribution(data) {
-  const el = document.getElementById("packageDistChart");
-  if (!el || !data.placedStudents || data.placedStudents.length === 0) {
-    if (el) el.innerHTML = "<b>No package data available</b>";
-    return;
-  }
+  if (!data.placedStudents) return;
 
-  let ranges = {
-    "< 3 LPA": 0,
-    "3 - 5 LPA": 0,
-    "5 - 8 LPA": 0,
-    "8 - 10 LPA": 0,
-    "> 10 LPA": 0
-  };
+  let ranges = { "<3":0,"3-5":0,"5-8":0,"8-10":0,">10":0 };
 
   data.placedStudents.forEach(s => {
-    let pkg = parseFloat(s.package || 0);
-
-    if (pkg > 0 && pkg < 3) ranges["< 3 LPA"]++;
-    else if (pkg >= 3 && pkg < 5) ranges["3 - 5 LPA"]++;
-    else if (pkg >= 5 && pkg < 8) ranges["5 - 8 LPA"]++;
-    else if (pkg >= 8 && pkg <= 10) ranges["8 - 10 LPA"]++;
-    else if (pkg > 10) ranges["> 10 LPA"]++;
+    const p = parseFloat(s.package||0);
+    if(p<3)ranges["<3"]++; else if(p<5)ranges["3-5"]++; else if(p<8)ranges["5-8"]++;
+    else if(p<=10)ranges["8-10"]++; else ranges[">10"]++;
   });
 
-  const rows = [
-    ["Package Range", "Students", { role: "annotation" }, { role: "style" }],
-    ["< 3 LPA", ranges["< 3 LPA"], ranges["< 3 LPA"].toString(), "#c8e6c9"],
-    ["3 - 5 LPA", ranges["3 - 5 LPA"], ranges["3 - 5 LPA"].toString(), "#81c784"],
-    ["5 - 8 LPA", ranges["5 - 8 LPA"], ranges["5 - 8 LPA"].toString(), "#4caf50"],
-    ["8 - 10 LPA", ranges["8 - 10 LPA"], ranges["8 - 10 LPA"].toString(), "#2e7d32"],
-    ["> 10 LPA", ranges["> 10 LPA"], ranges["> 10 LPA"].toString(), "#1b5e20"]
-  ];
+  const rows = [['Range','Students',{role:'annotation'}]];
+  Object.entries(ranges).forEach(([k,v])=>rows.push([k,v,v.toString()]));
 
-  const table = google.visualization.arrayToDataTable(rows);
-  
-  new google.visualization.ColumnChart(el).draw(table, {
-    height: 420,
-    bar: { groupWidth: "55%" },
-    legend: { position: "none" },
-    chartArea: { left: 70, top: 80, width: "70%", height: "65%" },
-    vAxis: {
-      title: "No. of Students",
-      minValue: 0,
-      format: '0',
-      viewWindow: { min: 0 },
-      gridlines: { count: -1 }
-    },
-    hAxis: { title: "Package Range" },
-    annotations: { alwaysOutside: true, textStyle: { fontSize: 12, bold: true } },
-    animation: { startup: true, duration: 800, easing: "out" }
-  });
+  new google.visualization.ColumnChart(packageDistChart)
+    .draw(google.visualization.arrayToDataTable(rows), {});
 }
 
 /************************************************
- * SEARCH FUNCTION
+ * TABLE + FILTERS
  ************************************************/
-function searchTable() {
-  const input = document.getElementById("studentSearch");
-  const filter = input.value.toLowerCase();
+function populateStudentTable(data) {
   const tbody = document.getElementById("studentTable");
   if (!tbody) return;
+  tbody.innerHTML = "";
 
-  Array.from(tbody.getElementsByTagName("tr")).forEach(row => {
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(filter) ? "" : "none";
+  (data.placedStudents||[]).forEach((s,i)=>{
+    const tr=document.createElement("tr");
+    tr.dataset.programme=s.programme||"";
+    tr.dataset.company=s.company||"";
+    tr.dataset.type=s.type||"";
+    tr.dataset.package=s.package||0;
+
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${s.programme||""}</td>
+      <td>${s.name||""}</td>
+      <td>${s.company||""}</td>
+      <td>${s.type||""}</td>
+      <td>${s.package||""}</td>`;
+    tbody.appendChild(tr);
   });
-  applyFilters();
 }
 
-/************************************************
- * POPULATE STUDENT TABLE
- ************************************************/
-function getPhotoUrl(photo) {
-  if (!photo) {
-    return "https://via.placeholder.com/80x105?text=No+Photo";
-  }
-
-  let fileId = "";
-
-  // Match uc?id=FILEID
-  let match = photo.match(/uc\?id=([^&]+)/);
-
-  // Match /d/FILEID/
-  if (!match) {
-    match = photo.match(/\/d\/([^\/]+)/);
-  }
-
-  if (match && match[1]) {
-    fileId = match[1];
-  }
-
-  if (fileId) {
-    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w150`;
-  }
-
-  return photo;
-}
-
-// ───────── Populate Placed Students Table ─────────//
-
-function populateStudentTable(data) {
-  const tbody = document.getElementById('studentTable');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-
-  const fragment = document.createDocumentFragment();
-
-  (data.placedStudents || []).forEach((s, i) => {
-    const tr = document.createElement('tr');
-    tr.dataset.programme = (s.programme || '').trim();
-    tr.dataset.company = (s.company || '').trim();
-    tr.dataset.type = (s.type || '').trim();
-    tr.dataset.package = s.package || 0;
-
-    const photoUrl = getPhotoUrl(s.photo);
-    const offerLink = s.offerLetterUrl
-      ? `<a href="${s.offerLetterUrl}" target="_blank" class="btn-view">View</a>`
-      : 'N/A';
-
-    tr.innerHTML = `
-      <td class="center">${i+1}</td>
-      <td>${s.programme||''}</td>
-      <td style="text-align:center"><img src="${photoUrl}" alt="${s.name||''}" loading="lazy" class="stud-photo"></td>
-      <td class="center">${s.registerNo||''}</td>
-      <td>${s.name||''}</td>
-      <td>${s.company||''}</td>
-      <td class="center">${s.type||''}</td>
-      <td class="center">${s.package||''}</td>
-      <td class="adminCol">${offerLink}</td>
-    `;
-    fragment.appendChild(tr);
-  });
-
-  tbody.appendChild(fragment);
-  toggleAdminView(sessionStorage.getItem("admin")==="true");
-  updateRowCount();
-}
-
-// ───────── Populate Programme Filter ─────────//
 function populateProgrammeFilter() {
-  const progSet = new Set();
-
-  document.querySelectorAll("#studentTable tr").forEach(row => {
-    if (row.dataset.programme) progSet.add(row.dataset.programme);
-  });
-
-  const select = document.getElementById("filterProgramme");
-  if (!select) return;
-
-  select.innerHTML = `<option value="">All Programmes</option>`;
-
-  progSet.forEach(p => {
-    const opt = document.createElement("option");
-    opt.value = p;
-    opt.textContent = p;
-    select.appendChild(opt);
-  });
+  const set=new Set();
+  document.querySelectorAll("#studentTable tr").forEach(r=>set.add(r.dataset.programme));
+  const sel=document.getElementById("filterProgramme");
+  if(!sel)return;
+  sel.innerHTML='<option value="">All</option>';
+  set.forEach(v=>sel.innerHTML+=`<option>${v}</option>`);
 }
 
-// ───────── Populate Company Filter ─────────//
 function populateCompanyFilter() {
-  const companySet = new Set();
-  document.querySelectorAll("#studentTable tr").forEach(row => {
-    if (row.dataset.company) companySet.add(row.dataset.company);
-  });
-
-  const select = document.getElementById("filterCompany");
-  if (!select) return;
-
-  select.innerHTML = `<option value="">All Companies</option>`;
-
-  companySet.forEach(c => {
-    const opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    select.appendChild(opt);
-  });
+  const set=new Set();
+  document.querySelectorAll("#studentTable tr").forEach(r=>set.add(r.dataset.company));
+  const sel=document.getElementById("filterCompany");
+  if(!sel)return;
+  sel.innerHTML='<option value="">All</option>';
+  set.forEach(v=>sel.innerHTML+=`<option>${v}</option>`);
 }
 
-// ───────── Attach Filter Events + Search Events ─────────//
-document.addEventListener("DOMContentLoaded", () => {
-// Filters
-document.querySelectorAll("#filterProgramme, #filterCompany, #filterType, #filterPackage")
-  .forEach(el => el.addEventListener("change", applyFilters));
-// Search
-  const searchInput = document.getElementById("studentSearch");
-  if (searchInput) {
-    searchInput.addEventListener("input", searchTable);
-  }
-});
-
-// ───────── Apply Filters ─────────
-function applyFilters() {
-  const searchValue = (document.getElementById("studentSearch")?.value || "").toLowerCase();
-  const programme = document.getElementById("filterProgramme")?.value.toLowerCase() || "";
-const company   = document.getElementById("filterCompany")?.value.toLowerCase() || "";
-const type      = document.getElementById("filterType")?.value.toLowerCase() || "";
-const pack      = document.getElementById("filterPackage")?.value || "";
-
-
-  document.querySelectorAll("#studentTable tr").forEach(row => {
-    const text = row.innerText.toLowerCase();
-    const rowProgramme = (row.dataset.programme || "").toLowerCase();
-    const rowCompany = (row.dataset.company || "").toLowerCase();
-    const rowType = (row.dataset.type || "").toLowerCase();
-    const rowPack = parseFloat(row.dataset.package || 0);
-
-    let show = true;
-
-    // ✅ SEARCH
-    if (searchValue && !text.includes(searchValue)) show = false;
-
-    // ✅ FILTERS
-    if (programme && rowProgramme !== programme) show = false;
-    if (company && rowCompany !== company) show = false;
-    if (type && rowType !== type) show = false;
-
-    if (pack) {
-      if (pack === "0-3" && rowPack > 3) show = false;
-      if (pack === "3-5" && (rowPack < 3 || rowPack > 5)) show = false;
-      if (pack === "5-10" && (rowPack < 5 || rowPack > 10)) show = false;
-      if (pack === "10+" && rowPack < 10) show = false;
-    }
-
-    row.style.display = show ? "" : "none";
-  });
-    updateRowCount();
-                    }
-
-function updateRowCount() {
-  const table = document.getElementById("studentTableMain");
-  if (!table) return;
-
-  const tbody = table.querySelector("tbody");
-  if (!tbody) return;
-
-  const rows = tbody.querySelectorAll("tr");
-
-  let visibleCount = 0;
-
-  rows.forEach(row => {
-    if (row.style.display !== "none") {
-      visibleCount++;
-    }
-  });
-
-  const rowCountBox = document.getElementById("rowCount");
-  if (rowCountBox) {
-    rowCountBox.innerText =
-      "Showing " + visibleCount + " of " + rows.length + " Students";
-  }
-}
 /************************************************
- * STUDENT GRID
+ * GRID
  ************************************************/
-function buildStudentGrid(data) {
-  const grid = document.getElementById("studentGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  (data.placedStudents || []).forEach(s => {
-    const photoUrl = getPhotoUrl(s.photo);
-
-    const card = document.createElement("div");
-    card.className = "student-card";
-
-    card.innerHTML = `
-      <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/90x110?text=No+Photo'">
-
-      <div class="student-name">${s.name || ""}</div>
-      <div class="student-reg">${s.registerNo || ""}</div>
-      <div class="student-prog">${s.programme || ""}</div>
-      <div class="student-company">${s.company || ""}</div>
-      <div class="student-pkg">${s.package || ""} LPA</div>
-    `;
-
-    grid.appendChild(card);
+function buildStudentGrid(data){
+  const g=document.getElementById("studentGrid");
+  if(!g)return;
+  g.innerHTML="";
+  (data.placedStudents||[]).forEach(s=>{
+    g.innerHTML+=`<div class="student-card">${s.name}</div>`;
   });
 }
 
 /************************************************
- * WINDOW RESIZE REDRAW (OPTIMIZED)
+ * RESIZE
  ************************************************/
-let resizeTimer;
-
-window.addEventListener('resize', () => {
-  if (!dataGlobal) return;
-
+window.addEventListener("resize",()=>{
+  if(!dataGlobal)return;
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    drawProgrammeChart(dataGlobal);
-    drawCoreNonCoreChart(dataGlobal);
-    drawPlacementStatusChart(dataGlobal);
-    drawCompanyChart(dataGlobal);
-    drawCompanyVsStudentsChart(dataGlobal);
-    drawTopPackageChart(dataGlobal);
-    drawPackageDistribution(dataGlobal);
-  }, 300);
+  resizeTimer=setTimeout(()=>fetchAndDrawCharts(),300);
 });
-********
-function drawChartById(id) {
-  if (!dataGlobal) return;
-
-  switch (id) {
-    case "statusChart":
-      drawPlacementStatusChart(dataGlobal);
-      break;
-    case "companyChart":
-      drawCompanyChart(dataGlobal);
-      break;
-    case "programmeChart":
-      drawProgrammeChart(dataGlobal);
-      break;
-    case "coreNonCoreChart":
-      drawCoreNonCoreChart(dataGlobal);
-      break;
-    case "companyStudentsChart":
-      drawCompanyVsStudentsChart(dataGlobal);
-      break;
-    case "topPackageChart":
-      drawTopPackageChart(dataGlobal);
-      break;
-    case "packageDistChart":
-      drawPackageDistribution(dataGlobal);
-      break;
-  }
-}
-
-/************************************************
- * HIGH QUALITY DOWNLOAD CHART FUNCTION
- ************************************************/
-function downloadChart(chartId, filename) {
-  const chartDiv = document.getElementById(chartId);
-  if (!chartDiv) return alert("Chart not found!");
-
-  const svg = chartDiv.querySelector("svg");
-  if (!svg) return alert("Chart not ready yet!");
-
-  const serializer = new XMLSerializer();
-  const svgStr = serializer.serializeToString(svg);
-
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-
-  const img = new Image();
-  const svgBlob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
-  const url = URL.createObjectURL(svgBlob);
-
-  // 👉 Improve quality
-  const scale = window.devicePixelRatio || 2;
-
-  const width = svg.clientWidth;
-  const height = svg.clientHeight;
-
-  canvas.width = width * scale;
-  canvas.height = height * scale;
-
-  canvas.style.width = width + "px";
-  canvas.style.height = height + "px";
-
-  ctx.scale(scale, scale);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-
-  img.onload = function () {
-    ctx.drawImage(img, 0, 0, width, height);
-    URL.revokeObjectURL(url);
-
-    const imgURI = canvas.toDataURL("image/png"); // PNG = better quality
-    const a = document.createElement("a");
-    a.download = filename;
-    a.href = imgURI;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
-  img.src = url;
-  }
