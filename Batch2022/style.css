@@ -944,65 +944,19 @@ tbody tr:hover td {background: #ffe0b2;}
 #lastUpdated {color: #5c5a5a; font-size: 14px;}
 .footer-bottom .disclaimer {color: #fc0303; font-size: 14px;}
 
-.placed-grid {
-  background: #f8fbff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,.06);
+.student-reg {
+  font-size: 11px;
+  color: #777;
 }
 
-.placed-header,
-.placed-row {
-  display: grid;
-  grid-template-columns: 70px 1.4fr 1.3fr 2fr 2fr .8fr;
-  align-items: center;
-  gap: 8px;
+.student-company {
+  font-size: 12px;
+  color: #333;
+  margin-top: 2px;
 }
 
-.placed-header {
-  background: #0d6efd;
-  color: #fff;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.placed-row {
-  padding: 10px 12px;
-  background: #fff;
-  border-bottom: 1px solid #e6e6e6;
-  font-size: 13.5px;
-}
-
-.placed-row:nth-child(even) {
-  background: #f3f7ff;
-}
-
-.placed-row img {
-  width: 55px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.placed-row .name {
-  font-weight: 600;
-}
-
-.placed-row .pkg {
-  font-weight: 700;
+.student-pkg {
+  font-size: 11px;
   color: #0d6efd;
-}
-
-/* Mobile */
-@media(max-width:768px) {
-  .placed-header,
-  .placed-row {
-    grid-template-columns: 60px 1.5fr 1.5fr;
-  }
-
-  .placed-header span:nth-child(n+4),
-  .placed-row span:nth-child(n+4) {
-    display: none;
-  }
+  font-weight: 600;
 }
