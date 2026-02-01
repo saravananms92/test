@@ -1,3 +1,23 @@
+let dataReady = false;
+let chartsReady = false;
+
+window.dataLoaded = function () {
+  dataReady = true;
+  tryHideLoader();
+};
+
+window.chartsLoaded = function () {
+  chartsReady = true;
+  tryHideLoader();
+};
+
+function tryHideLoader() {
+  if (dataReady && chartsReady) {
+    const loader = document.getElementById("loading");
+    if (loader) loader.classList.add("hide");
+  }
+}
+
 function switchBatch(value) {
   if (!value) return;
 
@@ -158,6 +178,14 @@ async function fetchAndDrawCharts() {
       "<p style='color:red;text-align:center'>⚠ Failed to load placement data</p>"
     );
   }
+  // ✅ Remove skeletons + reveal UI
+document.querySelectorAll(".skeleton").forEach(el => {
+  el.classList.remove("skeleton", "skeleton-card", "skeleton-chart");
+});
+
+document.querySelectorAll(".reveal").forEach(el => {
+  requestAnimationFrame(() => el.classList.add("show"));
+});
 }
 
 /************************************************
