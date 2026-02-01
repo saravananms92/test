@@ -17,14 +17,8 @@
   box-shadow: 0 6px 14px rgba(0,0,0,0.35);
 }
 
-.batch-switcher:focus {
-  background: linear-gradient(135deg, #4caf50, #2e7d32);
-}
-
-.batch-switcher option {
-  color: #000;
-  font-weight: 600;
-}
+.batch-switcher:focus {background: linear-gradient(135deg, #4caf50, #2e7d32);}
+.batch-switcher option {color: #000;font-weight: 600;}
 
 /* ======== GLOBAL RESET & BASE ================ */
 * {
@@ -39,14 +33,9 @@ body {
   line-height: 1.6;
 }
 
-header {
-  background: linear-gradient(135deg, #0D47A1, #1976D2);
-  color: white;
-}
+header {background: linear-gradient(135deg, #0D47A1, #1976D2); color: white;}
 
-section {
-  background: white;
-}
+section { background: white;}
 
 /* Common Container */
 .container {width: 90%; max-width: 1200px; padding: 0 3vw; margin: auto;}
@@ -123,10 +112,7 @@ h2 {
   position: relative;
 }
 
-@media (max-width: 768px) {
-  h2 {font-size: 1.3rem; margin: 12px 0 6px;}
-}
-
+@media (max-width: 768px) { h2 {font-size: 1.3rem; margin: 12px 0 6px;}}
 h3 {  font-size: 0.8rem;  margin: 10px 0 10px;  text-align: left;  color: #002244;}
 
 /***********************Circular***********/
@@ -243,9 +229,7 @@ h3 {  font-size: 0.8rem;  margin: 10px 0 10px;  text-align: left;  color: #00224
   font-size: 22px;
   cursor: pointer;
 }
-.modal {
-  z-index: 9999;   /* 👈 higher than header */
-}
+.modal {z-index: 9999;   /* 👈 higher than header */}
 
 @media (max-width: 768px) {
   .modal-content {
@@ -384,9 +368,7 @@ h3 {  font-size: 0.8rem;  margin: 10px 0 10px;  text-align: left;  color: #00224
   transition: 0.6s;
 }
 
-.card:hover::after {
-  left: 120%;
-}
+.card:hover::after {left: 120%;}
 
 /* label */
 .card .label {
@@ -515,10 +497,7 @@ h3 {  font-size: 0.8rem;  margin: 10px 0 10px;  text-align: left;  color: #00224
   grid-column: span 2;
 }
 
-.chart-box svg {
-  width: 100% !important;
-  height: 100% !important;
-}
+.chart-box svg { width: 100% !important; height: 100% !important;}
 
 /* Download Button - Icon Only */
 .download-btn {
@@ -551,12 +530,9 @@ h3 {  font-size: 0.8rem;  margin: 10px 0 10px;  text-align: left;  color: #00224
   }
 
   .chart-wrapper.wide {
-    grid-column: span 1;
-  }
+    grid-column: span 1; }
 
-  .chart-box {
-    height: 320px;
-  }
+  .chart-box {height: 320px;}
 }
 
 /* Small screens */
