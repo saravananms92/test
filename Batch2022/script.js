@@ -6,29 +6,11 @@ function setProgress(p, text) {
 }
 
 function showDashboard() {
-  document.getElementById("globalLoader").style.display = "none";
-  document.getElementById("dashboardContent").style.display = "block";
+  const loader = document.getElementById("globalLoader");
+  const dash = document.getElementById("dashboardContent");
+  if (loader) loader.style.display = "none";
+  if (dash) dash.style.display = "block";
 }
-
-function switchBatch(folder) {
-  if (!folder) return;
-  window.location.href = "../" + folder + "/";
-}
-
-function setCurrentBatch() {
-  const path = window.location.pathname.toLowerCase();
-
-  const select = document.getElementById("batchSwitcher");
-  if (!select) return;
-
-  if (path.includes("batch2022")) {
-    select.value = "Batch2022";
-  } else if (path.includes("batch2023")) {
-    select.value = "Batch2023";
-  }
-}
-
-window.addEventListener("load", setCurrentBatch);
 
 /************************************************
  * ADMIN SYSTEM (SINGLE SOURCE)
