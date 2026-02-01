@@ -944,19 +944,35 @@ tbody tr:hover td {background: #ffe0b2;}
 #lastUpdated {color: #5c5a5a; font-size: 14px;}
 .footer-bottom .disclaimer {color: #fc0303; font-size: 14px;}
 
-.student-reg {
-  font-size: 11px;
-  color: #777;
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
 }
 
-.student-company {
-  font-size: 12px;
-  color: #333;
-  margin-top: 2px;
+.student-card {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
 }
 
-.student-pkg {
-  font-size: 11px;
-  color: #0d6efd;
+.student-card img {
+  width: 90px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.student-name {
+  font-size: 13px;
   font-weight: 600;
+  margin-top: 6px;
+}
+
+.student-prog {
+  font-size: 12px;
+  color: #555;
 }
