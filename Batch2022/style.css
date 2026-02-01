@@ -1136,3 +1136,66 @@ tbody tr:hover td {background: #ffe0b2;}
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* =====================================================
+   LOADER FADE CONTROL
+===================================================== */
+#loading {
+  opacity: 1;
+  transition: opacity .6s ease, visibility .6s ease;
+}
+
+#loading.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* =====================================================
+   SKELETON SHIMMER SYSTEM
+===================================================== */
+.skeleton {
+  position: relative;
+  background: #e6eaf0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.6),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(300%); }
+}
+
+.skeleton-card { height: 110px; }
+.skeleton-chart { height: 420px; }
+.skeleton-text { height: 14px; margin: 6px 0; }
+
+/* =====================================================
+   ENTRANCE ANIMATION
+===================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px) scale(.98);
+  transition: all .6s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
