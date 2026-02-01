@@ -548,31 +548,43 @@ function buildStudentGrid(data) {
     const pkgs = [...new Set(students.map(s => s.package).filter(Boolean))];
     const pkgText = pkgs.join(", ") + " LPA";
 
-    // Company Section
     const section = document.createElement("div");
     section.className = "company-section";
 
     section.innerHTML = `
       <div class="company-title">${company}</div>
       <div class="company-package">${pkgText}</div>
-      <div class="student-grid"></div>
+
+      <div class="placed-grid">
+        <div class="placed-header">
+          <span>Photo</span>
+          <span>Name</span>
+          <span>Register No</span>
+          <span>Program</span>
+          <span>Company</span>
+          <span>Package</span>
+        </div>
+      </div>
     `;
 
-    const grid = section.querySelector(".student-grid");
+    const grid = section.querySelector(".placed-grid");
 
     students.forEach(s => {
       const photoUrl = getPhotoUrl(s.photo);
 
-      const card = document.createElement("div");
-      card.className = "student-card";
+      const row = document.createElement("div");
+      row.className = "placed-row";
 
-      card.innerHTML = `
-        <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/90x110?text=No+Photo'">
-        <div class="student-name">${s.name || ""}</div>
-        <div class="student-prog">${s.programme || ""}</div>
+      row.innerHTML = `
+        <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/60x75?text=No+Photo'">
+        <span class="name">${s.name || ""}</span>
+        <span>${s.regno || ""}</span>
+        <span>${s.programme || ""}</span>
+        <span>${s.company || ""}</span>
+        <span class="pkg">${s.package || ""} LPA</span>
       `;
 
-      grid.appendChild(card);
+      grid.appendChild(row);
     });
 
     container.appendChild(section);
