@@ -651,8 +651,6 @@ fetch("gallery.json")
   </script>
 
   <script>
-/* ================= GOOGLE DRIVE GALLERY ================= */
-
 const API_KEY = "AIzaSyAn3gGQMz5-YEMVXi83pY3VNj5Tdd_V-yc";
 
 let images = [];
@@ -660,77 +658,38 @@ let index = 0;
 let startX = 0;
 
 function openFolder(folderId) {
+  const query = encodeURIComponent(`'${folderId}' in parents and mimeType contains 'image/'`);
+
   fetch(
-    `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents and mimeType contains 'image/'&fields=files(id)&key=${API_KEY}`
+    `https://www.googleapis.com/drive/v3/files?` +
+    `q=${query}` +
+    `&fields=files(id,name,mimeType)` +
+    `&supportsAllDrives=true` +
+    `&includeItemsFromAllDrives=true` +
+    `&key=${API_KEY}`
   )
   .then(res => res.json())
   .then(data => {
+    console.log("Drive API response:", data);
+
     if (!data.files || data.files.length === 0) {
-      alert("No images found or folder not public");
+      alert("❌ No images found. Check image type or folder permission.");
       return;
     }
 
-    images = data.files.map(f => `https://drive.google.com/uc?id=${f.id}`);
+    images = data.files.map(f =>
+      `https://drive.google.com/uc?export=view&id=${f.id}`
+    );
+
     index = 0;
     renderGallery();
     document.getElementById("viewer").style.display = "block";
   })
   .catch(err => {
     console.error("Drive fetch error:", err);
-    alert("Gallery load failed. Check console.");
+    alert("❌ Gallery load failed. See console.");
   });
 }
-
-function closeViewer() {
-  document.getElementById("viewer").style.display = "none";
-}
-
-function renderGallery() {
-  const main = document.getElementById("mainImg");
-  const thumbs = document.getElementById("thumbs");
-
-  main.src = images[index];
-  thumbs.innerHTML = "";
-
-  images.forEach((img, i) => {
-    const t = document.createElement("img");
-    t.src = img;
-    if (i === index) t.classList.add("active");
-    t.onclick = () => { index = i; renderGallery(); };
-    thumbs.appendChild(t);
-  });
-}
-
-function next() {
-  index = (index + 1) % images.length;
-  renderGallery();
-}
-
-function prev() {
-  index = (index - 1 + images.length) % images.length;
-  renderGallery();
-}
-
-/* SWIPE SUPPORT */
-const mainImg = document.getElementById("mainImg");
-
-mainImg.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
-
-mainImg.addEventListener("touchend", e => {
-  const endX = e.changedTouches[0].clientX;
-  if (startX - endX > 50) next();
-  if (endX - startX > 50) prev();
-});
-
-/* AUTO SLIDE */
-setInterval(() => {
-  if (document.getElementById("viewer").style.display === "block") {
-    next();
-  }
-}, 4000);
-
 </script>
 
 </body>
