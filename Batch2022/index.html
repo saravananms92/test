@@ -681,9 +681,11 @@ function openFolder(folderId) {
     renderGallery();
     document.getElementById("viewer").style.display = "block";
   })
-  .catch(err => {
-    console.error(err);
-    alert("❌ Gallery load failed");
+ .catch(err => {
+  console.error("Drive API error:", err);
+  alert("❌ Gallery load failed – check Console (F12)");
+});
+
   });
 }
 </script>
