@@ -506,23 +506,25 @@ fetch("gallery.json")
   });
 </script>
 
-<h2>HYUNDAI</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1scI31MSdnBaDQli0U-R_nVvEC0lP_PBo#grid" width="100%" height="600" style="border:0;"></iframe>
+<h2 style="text-align:center">Photo Gallery</h2>
 
-<h2>Ninjacart</h2>
-<iframe src="https://drive.google.com/embeddedfolderview?id=1WwEkoUtZ7hiXdTF9Jf-WCna-Qn1xsQrC#grid" width="100%" height="600" style="border:0;"></iframe>
+<div class="folders">
+  <button onclick="openFolder('1scI31MSdnBaDQli0U-R_nVvEC0lP_PBo')">Folder 1</button>
+  <button onclick="openFolder('1WwEkoUtZ7hiXdTF9Jf-WCna-Qn1xsQrC')">Folder 2</button>
+  <button onclick="openFolder('11ZFLLdGlSsdIztnp1bl2gBebKoLhG45o')">Folder 3</button>
+  <button onclick="openFolder('1cjzSBBnMcPAwzdiqgarkjpClOwp7ZzL6')">Folder 4</button>
+  <button onclick="openFolder('1jru2wJZZ2JyYo24UtDI7_tlAd-ypJkuK')">Folder 5</button>
+</div>
 
-<style>
-iframe {
-  margin-bottom: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-h2 {
-  font-family: Arial;
-  margin-top: 40px;
-}
-</style>
+<div id="viewer" class="viewer">
+  <span class="close" onclick="closeViewer()">×</span>
+  <img id="mainImg">
+  <div class="nav">
+    <button onclick="prev()">❮</button>
+    <button onclick="next()">❯</button>
+  </div>
+  <div id="thumbs"></div>
+</div>
 
   <footer class="placement-footer">
   <div class="footer-grid">
