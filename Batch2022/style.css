@@ -1,73 +1,124 @@
+/* ===== Gallery Wrapper ===== */
 .gallery {
-  max-width: 800px;
-  margin: auto;
-  padding: 10px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 16px;
 }
 
+/* ===== Folder Grid ===== */
 .folders {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
 }
 
+/* ===== Folder Card ===== */
 .folder {
-  border-radius: 16px;
+  background: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,.15);
   cursor: pointer;
-  background: white;
-  transition: transform .3s;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.folder:hover { transform: translateY(-6px); }
+.folder:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
 
+/* ===== Folder Thumbnail ===== */
 .folder img {
-  width: 80%;
-  height: clamp(160px, 25vw, 220px);
+  width: 100%;
+  height: clamp(120px, 18vw, 160px);
   object-fit: cover;
+  display: block;
 }
 
+/* ===== Folder Title ===== */
 .folder h4 {
+  margin: 4px 0;
+  padding: 6px 8px;
   text-align: center;
-  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1f2a44;
 }
 
-/* Viewer */
+/* ===== Viewer Overlay ===== */
 .viewer {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.9);
+  background: rgba(0, 0, 0, 0.9);
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 9999;
 }
 
+/* ===== Viewer Image ===== */
 .viewer img {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 92%;
+  max-height: 88%;
+  border-radius: 6px;
 }
 
+/* ===== Close Button ===== */
 .viewer span {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 30px;
-  color: white;
+  top: 16px;
+  right: 22px;
+  font-size: 32px;
+  color: #ffffff;
   cursor: pointer;
+  line-height: 1;
 }
 
+/* ===== Navigation Buttons ===== */
 .viewer button {
   position: absolute;
   background: none;
   border: none;
-  color: white;
-  font-size: 30px;
+  color: #ffffff;
+  font-size: 34px;
   cursor: pointer;
+  padding: 10px;
+  user-select: none;
 }
 
-.viewer button:first-of-type { left: 10px; }
-.viewer button:last-of-type { right: 10px; }
+.viewer button:first-of-type {
+  left: 20px;
+}
+
+.viewer button:last-of-type {
+  right: 20px;
+}
+
+/* ===== Mobile Optimization ===== */
+@media (max-width: 600px) {
+  .folders {
+    gap: 12px;
+  }
+
+  .folder img {
+    height: 110px;
+  }
+
+  .folder h4 {
+    font-size: 0.9rem;
+    padding: 4px 6px;
+  }
+
+  .viewer button {
+    font-size: 28px;
+  }
+
+  .viewer span {
+    font-size: 28px;
+  }
+}
+
 
 .batch-switcher {
   background: linear-gradient(135deg, #ff9800, #ff5722);
