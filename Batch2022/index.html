@@ -58,21 +58,66 @@
 
 <h2>Photo Gallery</h2>
 
-<section class="gallery-section">
-  <h2 class="section-title">📸 Department Photo Gallery</h2>
-
-  <div class="drive-embed-wrapper">
-    <iframe
-      src="https://drive.google.com/embeddedfolderview?id=1MSrfXEdaIq_NPlFh4nbEkIwVNBjWQPLj#grid"
-      loading="lazy"
-      allowfullscreen>
-    </iframe>
-  </div>
+<section class="gallery">
+  <h2>Photo Gallery</h2>
+  <div class="folders" id="folders"></div>
 </section>
-<p style="text-align:center; color:#555; margin-bottom:12px;">
-  Click a folder to view images · Swipe on mobile
-</p>
 
+<div class="viewer" id="viewer">
+  <span onclick="closeViewer()">×</span>
+  <button onclick="prev()">❮</button>
+  <img id="viewerImg">
+  <button onclick="next()">❯</button>
+</div>
+
+  <script>
+let data = [];
+let current = [];
+let index = 0;
+
+fetch("https://script.google.com/macros/s/AKfycbwROtM9iFFqO1nizSeaPYBHk-6MadVufltS7vkWZo9k1tvWBvZ1v-2wYrcWh8w64FhO/exec")
+  .then(res => res.json())
+  .then(json => {
+    data = json;
+    const container = document.getElementById("folders");
+
+    json.forEach((f, i) => {
+      const card = document.createElement("div");
+      card.className = "folder";
+      card.innerHTML = `
+        <img src="${f.cover}">
+        <h4>${f.title}</h4>
+      `;
+      card.onclick = () => openFolder(i);
+      container.appendChild(card);
+    });
+  });
+
+function openFolder(i) {
+  current = data[i].images;
+  index = 0;
+  show();
+}
+
+function show() {
+  document.getElementById("viewer").style.display = "flex";
+  document.getElementById("viewerImg").src = current[index];
+}
+
+function closeViewer() {
+  document.getElementById("viewer").style.display = "none";
+}
+
+function next() {
+  index = (index + 1) % current.length;
+  show();
+}
+
+function prev() {
+  index = (index - 1 + current.length) % current.length;
+  show();
+}
+</script>
 
   <!-- KPI CARDS -->
 <h2 id="Overview">Placement Overview</h2>
